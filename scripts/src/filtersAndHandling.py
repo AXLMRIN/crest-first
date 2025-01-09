@@ -4,7 +4,6 @@
 import pandas   as pd
 import numpy    as np
 
-
 def filter( df : pd.DataFrame, label : str, value,
            returnBool : bool = False                ) -> pd.DataFrame | np.ndarray:
     # VERIFIED
