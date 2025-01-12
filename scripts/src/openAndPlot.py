@@ -7,7 +7,7 @@ import plotly.express as px
 import json
 
 # Custom
-from . import DATADIRPATH
+from .constants import DATADIRPATH
 
 # Objects and classes
 from plotly.graph_objs._figure import Figure as pxFigure
@@ -51,20 +51,30 @@ def openFilesCSVJSON(filename : str) -> tuple[pd.DataFrame, dict]:
     '''
     filename = filename_format(filename)
     # Open the files
-    dfToPlot = pd.read_csv(DATADIRPATH + filename + '.csv')
-    with open(DATADIRPATH + filename + '.json', 'r') as file : 
-        metadata = json.load(file)
+    dfToPlot =  pd.read_csv(DATADIRPATH + filename + '.csv' )
+    metadata = loadJSONFILE(DATADIRPATH + filename + '.json')
     return dfToPlot, metadata
 
-def open_and_plot(filename : str, **kwargs) -> pxFigure:
+def loadJSONFILE(filename : str) -> dict:
+    """
+    Extract data from a .json file
+    """
+    with open(filename, 'r') as file:
+        out : dict = json.load(file)
+    return out
+    
+
+def open_and_plot(filename : str, 
+                  axis_theme : dict = {'xaxis' : 'xaxis.json', 'yaxis' : 'yaxis.json'}) -> pxFigure:
     """
     this function is meant to open the csv file created with the 
     save_data_frame_for_plotting function as well as the json file and plot 
     the whole thing.
     
+    # No customization in this function, pure plotting and apply theme.
+
     FYI :
         - The filename can be either 'xxxx' or 'xxxx.csv' of 'xxxx.json'
-        - DATADIRPATH is meant to be a global variable defined eslewhere.
     """
     # Open data
     dfToPlot, metadata = openFilesCSVJSON(filename)
@@ -73,7 +83,18 @@ def open_and_plot(filename : str, **kwargs) -> pxFigure:
     xlabel, ylabel, metadata = cleanMetadata(metadata)
 
     fig = px.line(dfToPlot, x = xlabel, y = ylabel,
-                **{**metadata, **kwargs}            # Merge the ditctionnaries
+                **metadata
                 )
+    
+    # TODO Make apply theme function
+    # Load themes : 
+    # FIXME no axis is showing up
+    axis_themes_loaded = {
+        axisName : loadJSONFILE(axis_theme[axisName]) for axisName in axis_theme
+    }
+    fig = fig.update_layout(
+        axis_themes_loaded
+    )
+
     return fig
     

@@ -7,7 +7,7 @@ import numpy    as np
 import json
 
 # Custom
-from . import DATADIRPATH, SAVEPATH
+from .constants import DATADIRPATH, SAVEPATH
 
 # Object and classes
 from datetime import date

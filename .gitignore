@@ -4,3 +4,4 @@ data/*
 scripts/notebooks/playingAround.ipynb
 __pycache__/
 **/*test*
+scripts/notebooks/Plotly Tut.ipynb
