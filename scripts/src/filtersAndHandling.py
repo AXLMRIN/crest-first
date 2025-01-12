@@ -7,7 +7,7 @@ import numpy    as np
 import json
 
 # Custom
-from .constants import DATADIRPATH, SAVEPATH
+from .constants import DATADIRPATH, SAVEPATH, PLOTLYARGS
 
 # Object and classes
 from datetime import date
@@ -77,11 +77,7 @@ def getPerYear(df : pd.DataFrame, label : str = "bert_genre", func = np.mean,
     return out, years
 
 
-# NOTVERIFIED
-
-PLOTLYARGS = ['color', 'line_dash', 'symbol', 'hover_name', 'hover_data',
-              'facet_row', 'facet_col', 'error_x', 'error_y', 'error_x_minus',
-              'error_y_minus', 'animation_frame', 'animation_group']
+# NOTVERIFIED-------------------------------------------------------------------
 
 def xlabel_check(df : pd.DataFrame, xlabel : str) -> bool:
     if xlabel not in df.columns : 

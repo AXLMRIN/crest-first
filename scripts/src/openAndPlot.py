@@ -13,6 +13,7 @@ from .constants import DATADIRPATH
 from plotly.graph_objs._figure import Figure as pxFigure
 
 # Functions and methods
+from plotly.subplots import make_subplots
 
 # ------------------------------------------------------------------------------
 
@@ -65,7 +66,10 @@ def loadJSONFILE(filename : str) -> dict:
     
 
 def open_and_plot(filename : str, 
-                  axis_theme : dict = {'xaxis' : 'xaxis.json', 'yaxis' : 'yaxis.json'}) -> pxFigure:
+                  axis_theme : dict = {
+                      'xaxis' : 'xaxis.json',
+                      'yaxis' : 'yaxis.json'
+                      }) -> pxFigure:
     """
     this function is meant to open the csv file created with the 
     save_data_frame_for_plotting function as well as the json file and plot 
@@ -98,3 +102,67 @@ def open_and_plot(filename : str,
 
     return fig
     
+def string_to_coordinates(chain : str) -> tuple[int,int]:
+    '''
+    Receive a string of the format 'x_y' and returns a tuple (x,y)
+    '''
+    x,y = [int(coordinate) for coordinate in chain.split("_")]
+    return x,y
+
+def s2c(chain : str) -> tuple[int, int]:
+    '''
+    Alias of string_to_coordinates
+    '''
+    return string_to_coordinates(chain)
+
+def coordinates_to_string(x : int, y : int) -> str:
+    '''
+    Receive a a tuple (x,y) and returns string of the format 'x_y'  
+    '''
+    return f'{x}_{y}'
+
+def c2s(x : int, y : int) -> str:
+    '''
+    Alias of coordinates_to_string
+    '''
+    return coordinates_to_string(x, y)
+
+def add_figure_to_wrapper(wrapper_fig   : pxFigure,
+                         figure_to_add : pxFigure,
+                         coordinates  : tuple[int, int]) -> pxFigure : 
+    '''
+    Takes in a wrapper figure (plotly.subplots.make_subplot) and a plotly figure
+    (data, layout, frames) and append the data to the wrapper at the given 
+    coordinates
+    # TODO what about layout and frames ? 
+    '''
+
+    for data in figure_to_add.data:
+        wrapper_fig = wrapper_fig.add_trace(
+            data,row = coordinates[0], col = coordinates[1]
+        )
+    
+    return wrapper_fig
+
+def merge_plots(dict_of_plots : dict) -> pxFigure : 
+    '''
+    Receives a dictionnary of figs (pxFigure) as values and coordinates ('x_y') 
+    as keys then organise the 2 figs inside 1 bigger figure.
+    No customization (for now)
+    # FIXME can't have a weird tiling for now |:
+    '''
+
+    coordinates = [s2c(chain) for chain in dict_of_plots.keys()]
+    n_rows = max([c[0] for c in coordinates])
+    n_cols = max([c[1] for c in coordinates])
+    # Create the wrapper fig
+    wrapper_fig = make_subplots(rows = n_rows, cols = n_cols)
+
+    for coordinate in dict_of_plots:
+        wrapper_fig = add_figure_to_wrapper(
+                        wrapper_fig,
+                        dict_of_plots[coordinate],
+                        s2c(coordinate)
+                        )
+        
+    return wrapper_fig
