@@ -3,4 +3,4 @@ data/*
 .vscode/*
 scripts/notebooks/playingAround.ipynb
 __pycache__/
-*/test.*
+test.*
