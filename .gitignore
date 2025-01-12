@@ -2,3 +2,4 @@
 data/*
 .vscode/*
 scripts/notebooks/playingAround.ipynb
+__pycache__/
