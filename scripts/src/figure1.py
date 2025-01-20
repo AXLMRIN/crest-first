@@ -20,6 +20,20 @@ from plotly.subplots import make_subplots
 from itertools import product
 
 #-------------------------------------------------------------------------------
+# Settings =====================================================================
+all_categories = [
+    'Science politique',
+    'Sociologie'	,
+    'Anthropologie'	,
+    'Histoire'	,
+    'Autre interdisciplinaire'	,
+    'Démographie',
+    'Economie',
+    'SIC'	,
+    'Géographie'	,
+    'Aréale']
+# ==============================================================================
+
 
 # Reading files -----------------------------------------------------------------
 dfPlot      = pd.read_csv('data/checkpoints/dfPlot.csv')
@@ -28,7 +42,6 @@ dfPlotRA    = pd.read_csv('data/checkpoints/dfPlotRA.csv')
 # Creating subplot figure -------------------------------------------------------
 
 # https://plotly.com/python-api-reference/generated/plotly.subplots.make_subplots.html
-
 fig = make_subplots(
     rows=11, cols=1,
     specs=[[{}]] * 11,
@@ -47,26 +60,13 @@ fig = make_subplots(
 
 # Setting title and axis names
 fig.update_layout(dict(
-    title = dict(
-            text = ("Insightful title"),
-             automargin = True,  # TODO Check the margins and pads again
-             pad = dict(t = 10, b = 10 , r = 10, l = 10)),
+    title = dict(), # No Title
     width = 1150, height = 1400,
     plot_bgcolor = 'white',
     # showlegend = False
 ))
 
-all_categories = [
-    'Science politique',
-    'Sociologie'	,
-    'Anthropologie'	,
-    'Histoire'	,
-    'Autre interdisciplinaire'	,
-    'Démographie',
-    'Economie',
-    'SIC'	,
-    'Géographie'	,
-    'Aréale']
+
 
 
 
