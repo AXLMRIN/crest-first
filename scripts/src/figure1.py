@@ -7,7 +7,10 @@ import numpy as np
 # Native
 
 # Custom 
-from package.temp import add_traces_to_subplot
+from package.temp import (
+    add_traces_to_subplot, 
+    add_traces_to_subplot_bi_colours_filling
+)
 
 # Classes
 from plotly.graph_objs._figure import Figure as goFigure
@@ -222,12 +225,12 @@ kwargs_subplots = {
                 'width' : linewidth_main,
                 'dash' : dash_main,
             },
-            'fill' : 'tonexty',
-            'fillcolor' : fill_colour,
+            # 'fill' : 'tonexty',
+            # 'fillcolor' : fill_colour, 
             'showlegend' : False
         }
-
-    ]
+    ],
+    'bi-colouring-args' : ['red','blue']
 }
 
 # Science Politique - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -236,7 +239,7 @@ fig.update_layout(dict(
     xaxis2 = xaxis_theme
 ))
 
-add_traces_to_subplot(fig, dfPlotRA, x = "annee",
+add_traces_to_subplot_bi_colours_filling(fig, dfPlotRA, x = "annee",
                       columns = ["Toutes", "Science politique"],
                       row = 2, col = 1, 
                       **kwargs_subplots)
@@ -247,7 +250,7 @@ fig.update_layout(dict(
     xaxis3 = xaxis_theme
 ))
 
-add_traces_to_subplot(fig, dfPlotRA, x = "annee",
+add_traces_to_subplot_bi_colours_filling(fig, dfPlotRA, x = "annee",
                       columns = ["Toutes", "Sociologie"],
                       row = 3, col = 1, 
                       **kwargs_subplots)
@@ -258,7 +261,7 @@ fig.update_layout(dict(
     xaxis4 = xaxis_theme
 ))
 
-add_traces_to_subplot(fig, dfPlotRA, x = "annee",
+add_traces_to_subplot_bi_colours_filling(fig, dfPlotRA, x = "annee",
                       columns = ["Toutes", "Anthropologie"],
                       row = 4, col = 1, 
                       **kwargs_subplots)
@@ -269,7 +272,7 @@ fig.update_layout(dict(
     xaxis5 = xaxis_theme
 ))
 
-add_traces_to_subplot(fig, dfPlotRA, x = "annee",
+add_traces_to_subplot_bi_colours_filling(fig, dfPlotRA, x = "annee",
                       columns = ["Toutes", "Histoire"],
                       row = 5, col = 1, 
                       **kwargs_subplots)
@@ -280,7 +283,7 @@ fig.update_layout(dict(
     xaxis6 = xaxis_theme
 ))
 
-add_traces_to_subplot(fig, dfPlotRA, x = "annee",
+add_traces_to_subplot_bi_colours_filling(fig, dfPlotRA, x = "annee",
                       columns = ["Toutes", "Démographie"],
                       row = 6, col = 1, 
                       **kwargs_subplots)
@@ -291,7 +294,7 @@ fig.update_layout(dict(
     xaxis7 = xaxis_theme
 ))
 
-add_traces_to_subplot(fig, dfPlotRA, x = "annee",
+add_traces_to_subplot_bi_colours_filling(fig, dfPlotRA, x = "annee",
                       columns = ["Toutes", "Economie"],
                       row = 7, col = 1, 
                       **kwargs_subplots)
@@ -302,7 +305,7 @@ fig.update_layout(dict(
     xaxis8 = xaxis_theme
 ))
 
-add_traces_to_subplot(fig, dfPlotRA, x = "annee",
+add_traces_to_subplot_bi_colours_filling(fig, dfPlotRA, x = "annee",
                       columns = ["Toutes", "SIC"],
                       row = 8, col = 1, 
                       **kwargs_subplots)
@@ -313,7 +316,7 @@ fig.update_layout(dict(
     xaxis9 = xaxis_theme
 ))
 
-add_traces_to_subplot(fig, dfPlotRA, x = "annee",
+add_traces_to_subplot_bi_colours_filling(fig, dfPlotRA, x = "annee",
                       columns = ["Toutes", "Géographie"],
                       row = 9, col = 1, 
                       **kwargs_subplots)
@@ -324,7 +327,7 @@ fig.update_layout(dict(
     xaxis10 = xaxis_theme
 ))
 
-add_traces_to_subplot(fig, dfPlotRA, x = "annee",
+add_traces_to_subplot_bi_colours_filling(fig, dfPlotRA, x = "annee",
                       columns = ["Toutes", "Aréale"],
                       row = 10, col = 1, 
                       **kwargs_subplots)
@@ -335,7 +338,7 @@ fig.update_layout(dict(
     xaxis11 = xaxis_theme
 ))
 
-add_traces_to_subplot(fig, dfPlotRA, x = "annee",
+add_traces_to_subplot_bi_colours_filling(fig, dfPlotRA, x = "annee",
                       columns = ["Toutes", "Autre interdisciplinaire"],
                       row = 11, col = 1, 
                       **kwargs_subplots)
