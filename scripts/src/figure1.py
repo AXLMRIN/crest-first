@@ -19,7 +19,6 @@ from plotly.graph_objs._figure import Figure as goFigure
 from plotly.subplots import make_subplots
 from itertools import product
 
-#-------------------------------------------------------------------------------
 # Settings =====================================================================
 all_categories = [
     'Science politique'         ,
@@ -51,11 +50,19 @@ dash_toutes = 'longdash'
 dash_toutes_sauf_genre = 'dashdot'
 
 # Traces customisation kwargs - - - - - - - - - - - - - - - - - - - - - - - - -
-# HERE change legend
+# HERE change legend and customisation of the main traces of part 1
 part_1_traces_customisation = {
     'local' : [
         {
-            'name' : "Moyenne de toutes les revues",
+            'name' : "Revues spécialisées en études de genre",
+            'line' : {
+                'color' : colour_main_traces,
+                'width' : linewidth_main_traces,
+                'dash' : dash_main
+                }
+        },
+        {
+            'name' : "Moyenne des revues",
             'line' : {
                 'color' : colour_toutes,
                 'width' : linewidth_main_traces,
@@ -63,25 +70,17 @@ part_1_traces_customisation = {
                 }
         },
         {
-            'name' :  ("Moyennes de toutes les revues qui ne sont pas"
-                       " des revues spécialisées dans les études de genre"),
+            'name' :  ("Moyenne des revues, sans revues de genre"),
             'line' : {
                 'color' : colour_toutes_sauf_genre,
                 'width' : linewidth_main_traces,
                 'dash' : dash_toutes_sauf_genre
                 }
         },
-        {
-            'name' : "Revues spécialisées dans les études de genre",
-            'line' : {
-                'color' : colour_main_traces,
-                'width' : linewidth_main_traces,
-                'dash' : dash_main
-                }
-        }
     ]
 }
 
+# HERE to modify the traces that will be in the background of part 1
 part_1_bg_traces_customisation = {
     'global' : {
         'line' : {
@@ -114,8 +113,8 @@ part_2_customisation = {
         }
     ],
     'bi-colouring-args' : [
-        'rgba(255,0,0,0.2)',
-        'rgba(0,0,255,0.2)   '
+        'rgba(100,140,180,0.2)',
+        'rgba(180,140,100,0.2)   '
         ]
 }
 # ==============================================================================
@@ -215,7 +214,7 @@ add_traces_to_subplot(fig, dfPlot,
 
 add_traces_to_subplot(  fig, dfPlotRA,
                         x = "annee",
-                        columns = ["Toutes", "Toutes sauf Genre", "Genre"],
+                        columns = ["Genre", "Toutes", "Toutes sauf Genre"],
                         row = 1, col = 1, **part_1_traces_customisation)
 
 # Create the other subfigures ---------------------------------------------------
