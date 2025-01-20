@@ -22,16 +22,17 @@ from itertools import product
 #-------------------------------------------------------------------------------
 # Settings =====================================================================
 all_categories = [
-    'Science politique',
-    'Sociologie'	,
-    'Anthropologie'	,
-    'Histoire'	,
-    'Autre interdisciplinaire'	,
-    'Démographie',
-    'Economie',
-    'SIC'	,
-    'Géographie'	,
-    'Aréale']
+    'Science politique'         ,
+    'Sociologie'	            ,
+    'Anthropologie'	            ,
+    'Histoire'	                ,
+    # 'Autre interdisciplinaire'	,
+    'Démographie'               ,
+    'Economie'                  ,
+    'SIC'	                    ,
+    'Géographie'	            ,
+    # 'Aréale'
+    ]
 
 tick_grid_colour = 'rgb(50,50,50)'
 
@@ -40,8 +41,8 @@ colour_bg_traces = 'rgba(200,200,200,0.5)'
 colour_toutes = 'black'
 colour_toutes_sauf_genre = 'black'
 
-linewidth_main_trace  = 3
-linewidth_bg_trace   = 1
+linewidth_main_traces   = 3
+linewidth_bg_traces     = 1
 
 fill_colour = 'rgba(180,180,180,0.7)'
 
@@ -49,6 +50,74 @@ dash_main = 'solid'
 dash_toutes = 'longdash'
 dash_toutes_sauf_genre = 'dashdot'
 
+# Traces customisation kwargs - - - - - - - - - - - - - - - - - - - - - - - - -
+# HERE change legend
+part_1_traces_customisation = {
+    'local' : [
+        {
+            'name' : "Moyenne de toutes les revues",
+            'line' : {
+                'color' : colour_toutes,
+                'width' : linewidth_main_traces,
+                'dash' : dash_toutes
+                }
+        },
+        {
+            'name' :  ("Moyennes de toutes les revues qui ne sont pas"
+                       " des revues spécialisées dans les études de genre"),
+            'line' : {
+                'color' : colour_toutes_sauf_genre,
+                'width' : linewidth_main_traces,
+                'dash' : dash_toutes_sauf_genre
+                }
+        },
+        {
+            'name' : "Revues spécialisées dans les études de genre",
+            'line' : {
+                'color' : colour_main_traces,
+                'width' : linewidth_main_traces,
+                'dash' : dash_main
+                }
+        }
+    ]
+}
+
+part_1_bg_traces_customisation = {
+    'global' : {
+        'line' : {
+            'color' : colour_bg_traces,
+            'width' : linewidth_bg_traces},
+        'showlegend' : False
+    }
+}
+
+# HERE to modify the traces in the second part of the graph
+part_2_customisation = {
+    'local' : [
+        {
+            'line' : {
+                'color' : colour_toutes,
+                'width' : linewidth_main_traces,
+                'dash' : dash_toutes
+            },
+            'showlegend' : False
+        },
+        {
+            'line' : {
+                'color' : colour_main_traces,
+                'width' : linewidth_main_traces,
+                'dash' : dash_main,
+            },
+            # 'fill' : 'tonexty',
+            # 'fillcolor' : fill_colour, 
+            'showlegend' : False
+        }
+    ],
+    'bi-colouring-args' : [
+        'rgba(255,0,0,0.2)',
+        'rgba(0,0,255,0.2)   '
+        ]
+}
 # ==============================================================================
 
 # Variables derived from Settings ----------------------------------------------
@@ -81,7 +150,6 @@ fig.update_layout(dict(
     title = dict(), # No Title
     width = 1150, height = 1400,
     plot_bgcolor = 'white',
-    # showlegend = False
 ))
 
 # Define graph 1 ----------------------------------------------------------------
@@ -122,7 +190,7 @@ fig.update_layout(
     )
 )
 
-# Change legend 
+# Customise legend
 fig.update_layout(dict(
     legend = dict(
         bgcolor = 'rgba(255,255,255,1)',
@@ -135,57 +203,20 @@ fig.update_layout(dict(
 ))
 
 # Add all the categories in the background
-
-kwargs = {
-    'global' : {
-        'line' : {
-            'color' : colour_bg,
-            'width' : linewidth_bg},
-        'showlegend' : False
-    }
-}
-
 add_traces_to_subplot(fig,dfPlot,
                       x = "annee",columns=all_categories,
-                      row = 1, col = 1, **kwargs) # All categories except gender studies
+                      row = 1, col = 1,
+                      **part_1_bg_traces_customisation) # All categories except gender studies
 add_traces_to_subplot(fig, dfPlot,
                       x = "annee", columns=["Genre"],
-                      row = 1, col = 1, **kwargs)
+                      row = 1, col = 1, **part_1_bg_traces_customisation)
 
 # Add the colourful traces
-kwargs = {
-    'local' : [
-        {
-            'name' : "Moyenne de toutes les revues",
-            'line' : {
-                'color' : colour_toutes,
-                'width' : linewidth_main,
-                'dash' : dash_toutes
-                }
-        },
-        {
-            'name' :  ("Moyennes de toutes les revues qui ne sont pas"
-                       " des revues spécialisées dans les études de genre"),
-            'line' : {
-                'color' : colour_toutes_sauf_genre,
-                'width' : linewidth_main,
-                'dash' : dash_toutes_sauf_genre
-                }
-        },
-        {
-            'name' : "Revues spécialisées dans les études de genre",
-            'line' : {
-                'color' : colour_main,
-                'width' : linewidth_main,
-                'dash' : dash_main
-                }
-        }
-    ]
-}
+
 add_traces_to_subplot(  fig, dfPlotRA,
                         x = "annee",
                         columns = ["Toutes", "Toutes sauf Genre", "Genre"],
-                        row = 1, col = 1, **kwargs)
+                        row = 1, col = 1, **part_1_traces_customisation)
 
 # Create the other subfigures ---------------------------------------------------
 yaxis_theme = {
@@ -205,139 +236,19 @@ xaxis_theme = {
     }
 }
 
-kwargs_subplots = {
-    'local' : [
-        {
-            'line' : {
-                'color' : colour_toutes,
-                'width' : linewidth_main,
-                'dash' : dash_toutes
-            },
-            'showlegend' : False
-        },
-        {
-            'line' : {
-                'color' : colour_main,
-                'width' : linewidth_main,
-                'dash' : dash_main,
-            },
-            # 'fill' : 'tonexty',
-            # 'fillcolor' : fill_colour, 
-            'showlegend' : False
-        }
-    ],
-    'bi-colouring-args' : ['red','blue']
-}
+# Add the traces for the categories in all_categories
+for i, categorie in enumerate(all_categories):
+    add_traces_to_subplot_bi_colours_filling(fig, dfPlotRA,
+        x = "annee", columns = ['Toutes'] + [categorie],
+        row = i + 2, col = 1, **part_2_customisation)
 
-# Science Politique - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-fig.update_layout(dict(
-    yaxis2 = yaxis_theme,
-    xaxis2 = xaxis_theme
-))
-
-add_traces_to_subplot_bi_colours_filling(fig, dfPlotRA, x = "annee",
-                      columns = ["Toutes", "Science politique"],
-                      row = 2, col = 1, 
-                      **kwargs_subplots)
-
-# Sociologie - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-fig.update_layout(dict(
-    yaxis3 = yaxis_theme,
-    xaxis3 = xaxis_theme
-))
-
-add_traces_to_subplot_bi_colours_filling(fig, dfPlotRA, x = "annee",
-                      columns = ["Toutes", "Sociologie"],
-                      row = 3, col = 1, 
-                      **kwargs_subplots)
-
-# Anthropologie -  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-fig.update_layout(dict(
-    yaxis4 = yaxis_theme,
-    xaxis4 = xaxis_theme
-))
-
-add_traces_to_subplot_bi_colours_filling(fig, dfPlotRA, x = "annee",
-                      columns = ["Toutes", "Anthropologie"],
-                      row = 4, col = 1, 
-                      **kwargs_subplots)
-
-# Histoire - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-fig.update_layout(dict(
-    yaxis5 = yaxis_theme,
-    xaxis5 = xaxis_theme
-))
-
-add_traces_to_subplot_bi_colours_filling(fig, dfPlotRA, x = "annee",
-                      columns = ["Toutes", "Histoire"],
-                      row = 5, col = 1, 
-                      **kwargs_subplots)
-
-# Démographie - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-fig.update_layout(dict(
-    yaxis6 = yaxis_theme,
-    xaxis6 = xaxis_theme
-))
-
-add_traces_to_subplot_bi_colours_filling(fig, dfPlotRA, x = "annee",
-                      columns = ["Toutes", "Démographie"],
-                      row = 6, col = 1, 
-                      **kwargs_subplots)
-
-# Economie - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -- - 
-fig.update_layout(dict(
-    yaxis7 = yaxis_theme,
-    xaxis7 = xaxis_theme
-))
-
-add_traces_to_subplot_bi_colours_filling(fig, dfPlotRA, x = "annee",
-                      columns = ["Toutes", "Economie"],
-                      row = 7, col = 1, 
-                      **kwargs_subplots)
-
-# SIC - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-fig.update_layout(dict(
-    yaxis8 = yaxis_theme,
-    xaxis8 = xaxis_theme
-))
-
-add_traces_to_subplot_bi_colours_filling(fig, dfPlotRA, x = "annee",
-                      columns = ["Toutes", "SIC"],
-                      row = 8, col = 1, 
-                      **kwargs_subplots)
-
-# Géographie - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-fig.update_layout(dict(
-    yaxis9 = yaxis_theme,
-    xaxis9 = xaxis_theme
-))
-
-add_traces_to_subplot_bi_colours_filling(fig, dfPlotRA, x = "annee",
-                      columns = ["Toutes", "Géographie"],
-                      row = 9, col = 1, 
-                      **kwargs_subplots)
-
-# Aréales - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-fig.update_layout(dict(
-    yaxis10 = yaxis_theme,
-    xaxis10 = xaxis_theme
-))
-
-add_traces_to_subplot_bi_colours_filling(fig, dfPlotRA, x = "annee",
-                      columns = ["Toutes", "Aréale"],
-                      row = 10, col = 1, 
-                      **kwargs_subplots)
-
-# Autre interdisciplinaire - - - - - - - - - - - - - - - - - - - - - - - - - - -
-fig.update_layout(dict(
-    yaxis11 = yaxis_theme,
-    xaxis11 = xaxis_theme
-))
-
-add_traces_to_subplot_bi_colours_filling(fig, dfPlotRA, x = "annee",
-                      columns = ["Toutes", "Autre interdisciplinaire"],
-                      row = 11, col = 1, 
-                      **kwargs_subplots)
+# Apply theme to axis
+fig.update_layout({
+    key : yaxis_theme for key in ['yaxis' + str(i) for i in range(2,n_rows + 1)]
+})
+fig.update_layout({
+    key : xaxis_theme for key in ['xaxis' + str(i) for i in range(2,n_rows + 1)]
+})
 
 # Save the fig ------------------------------------------------------------------
 fig.write_image('fig_test.png')
