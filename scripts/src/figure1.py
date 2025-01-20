@@ -32,10 +32,30 @@ all_categories = [
     'SIC'	,
     'Géographie'	,
     'Aréale']
+
+tick_grid_colour = 'rgb(50,50,50)'
+
+colour_main_traces = 'black'
+colour_bg_traces = 'rgba(200,200,200,0.5)'
+colour_toutes = 'black'
+colour_toutes_sauf_genre = 'black'
+
+linewidth_main_trace  = 3
+linewidth_bg_trace   = 1
+
+fill_colour = 'rgba(180,180,180,0.7)'
+
+dash_main = 'solid'
+dash_toutes = 'longdash'
+dash_toutes_sauf_genre = 'dashdot'
+
 # ==============================================================================
 
+# Variables derived from Settings ----------------------------------------------
+n_rows = len(all_categories) + 1
 
 # Reading files -----------------------------------------------------------------
+# HERE Modify the path according to your configuration
 dfPlot      = pd.read_csv('data/checkpoints/dfPlot.csv')
 dfPlotRA    = pd.read_csv('data/checkpoints/dfPlotRA.csv')
 
@@ -43,13 +63,11 @@ dfPlotRA    = pd.read_csv('data/checkpoints/dfPlotRA.csv')
 
 # https://plotly.com/python-api-reference/generated/plotly.subplots.make_subplots.html
 fig = make_subplots(
-    rows=11, cols=1,
-    specs=[[{}]] * 11,
-    row_heights= [0.5] + [0.05] * 10,
-    subplot_titles=(
-       "","Science Politique","Sociologie","Anthropologie",
-       "Histoire", "Démographie", "Économie","SIC", "Géographie", "Aréales", 
-       "Autre interdisciplinaire"),
+    rows= n_rows , cols=1,
+    specs=[[{}]] * n_rows,
+    row_heights= [n_rows - 1] + [1] * (n_rows - 1),
+    start_cell = "top-left", 
+    subplot_titles=[""] + all_categories,
 
        shared_xaxes = 'all',
        print_grid = True,
@@ -58,35 +76,13 @@ fig = make_subplots(
        y_title = ''
 )
 
-# Setting title and axis names
+# Setting title
 fig.update_layout(dict(
     title = dict(), # No Title
     width = 1150, height = 1400,
     plot_bgcolor = 'white',
     # showlegend = False
 ))
-
-
-
-
-
-
-# Parameters -------------------------------------------------------------------
-tick_grid_colour = 'rgb(50,50,50)'
-
-colour_main = 'black'
-colour_bg = 'rgba(200,200,200,0.5)'
-colour_toutes = 'black'
-colour_toutes_sauf_genre = 'black'
-
-linewidth_main  = 3
-linewidth_bg    = 1
-
-fill_colour = 'rgba(180,180,180,0.7)'
-
-dash_main = 'solid'
-dash_toutes = 'longdash'
-dash_toutes_sauf_genre = 'dashdot'
 
 # Define graph 1 ----------------------------------------------------------------
 # Set x and y axis
