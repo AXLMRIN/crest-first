@@ -139,4 +139,21 @@ def add_traces_to_subplot_bi_colours_filling(fig : goFigure, df : pd.DataFrame,
             fig.data[-1].update(**kwargs['local'][1])
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-       
+
+def add_to_dict(dictionnary : dict, key : str , value):
+    '''allows the user to add a value to a dictionnary
+    The dictionnary is copied so that teh output is independant from
+    the input. 
+    use '/' in the key to specify sub-dictionnary keys
+    '''
+    dictionnary = dictionnary.copy()
+    keys = key.split('/')
+    # TODELETE
+    print(keys)
+    while len(keys) > 0:
+        current_key = keys.pop(0)
+
+        if not current_key in dictionnary :
+            raise KeyError(f"{current_key} not in dictionnary")
+            return
+        

@@ -86,14 +86,16 @@ part_1_bg_traces_customisation = {
         'line' : {
             'color' : colour_bg_traces,
             'width' : linewidth_bg_traces},
-        'showlegend' : False
+        'showlegend' : False,
+        'hoverinfo' : 'skip'
     }
 }
 
 # HERE to modify the traces in the second part of the graph
 part_2_customisation = {
     'local' : [
-        {
+        {   
+            'name' : "Moyenne des revues",
             'line' : {
                 'color' : colour_toutes,
                 'width' : linewidth_main_traces,
@@ -131,17 +133,17 @@ dfPlotRA    = pd.read_csv('data/checkpoints/dfPlotRA.csv')
 
 # https://plotly.com/python-api-reference/generated/plotly.subplots.make_subplots.html
 fig = make_subplots(
-    rows= n_rows , cols=1,
-    specs=[[{}]] * n_rows,
+    rows = n_rows , cols = 1,
+    specs = [[{}]] * n_rows,
     row_heights= [n_rows - 1] + [1] * (n_rows - 1),
     start_cell = "top-left", 
     subplot_titles=[""] + all_categories,
 
-       shared_xaxes = 'all',
-       print_grid = True,
+    shared_xaxes = True,
+    print_grid = True,
 
-       x_title = 'Année de publication',
-       y_title = ''
+    x_title = 'Année de publication',
+    y_title = ''
 )
 
 # Setting title
@@ -197,7 +199,8 @@ fig.update_layout(dict(
         orientation = "h",
         xanchor = 'left',
         yanchor = 'top',
-        x = .1, y = 1.05
+        x = .1, y = 1.05,
+        traceorder = 'normal'
     )
 ))
 
@@ -249,5 +252,12 @@ fig.update_layout({
     key : xaxis_theme for key in ['xaxis' + str(i) for i in range(2,n_rows + 1)]
 })
 
+# Hover parameters
+fig.update_layout(dict(
+    hovermode="x unified",
+    hoversubplots="axis",
+    ))
+
 # Save the fig ------------------------------------------------------------------
-fig.write_image('fig_test.png')
+# fig.write_image('fig_test.png')
+fig.write_html('fig_test.html')
