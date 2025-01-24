@@ -152,3 +152,32 @@ def add_trace(fig : goFigure, name : str, df : pd.DataFrame,
             y = df[y_column],
             **parameters[name])
     )
+
+def create_update_menus_buttons(buttons_dict : dict) -> list[dict]:
+    """
+        Creates a list of dictionnaries, each dictionnary is a button with  from
+https://plotly.com/python/reference/layout/updatemenus/#layout-updatemenus-items-updatemenu-buttons
+    TODO Continue the description
+    """
+    buttons : list[dict] = []
+
+
+    for key_label in buttons_dict:
+        buttons.append(
+            {
+                "label" : key_label,
+                "method" : "update",
+                "args" : [{
+                    "visible" : buttons_dict[key_label]["visible"],
+                },
+                buttons_dict[key_label]["other_args"]]
+            }
+        )
+    return buttons
+
+def bool_out_of_list(list_of_indexes : list[int], 
+                     len_of_vector : int) -> list[bool] : 
+    """Takes in a list of indexes and returns a list of booleans of the size 
+    len_of_vector. the booleans are True if the index is in list_of_indexes and 
+    False if not"""
+    return [i in list_of_indexes for i in range(len_of_vector)]

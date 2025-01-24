@@ -6,10 +6,11 @@
             "color" : "rgb(20, 20, 20)"
         }
     },
+    "groupclick" : "toggleitem",
     "itemdoubleclick" : "toggleothers",
     "itemclick" : "toggle",
     "orientation" : "h",
     "x" : 0.5, "xanchor" : "center",
     "y" : 1, "yanchor" : "bottom", 
-    "entrywidth" : 140
+    "entrywidth" : 120
 }

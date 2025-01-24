@@ -1,0 +1,7 @@
+{
+    "type" : "buttons",
+    "direction" : "down",
+    "showactive" : true,
+    "x" : 1.1, "xanchor" : "left",
+    "y" : 0.5, "yanchor" : "middle"
+}

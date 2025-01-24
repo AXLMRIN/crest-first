@@ -84,6 +84,9 @@
         }
     },
     "ALL" : {
-        "hovertemplate" : "%{y:.2f}\\%"
+        "hovertemplate" : "%{y:.2f}",
+        "hoverlabel" : {
+            "align" : "left"
+        }
     }
 }
