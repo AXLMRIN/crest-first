@@ -1,1 +1,18 @@
-{"showline": true, "linecolor": "rgb(204, 204, 204)", "linewidth": 2, "ticks": "outside", "showticklabels": true, "tickangle": 0, "tickfont": {"family": "Arial", "size": 12, "color": "rgb(82, 82, 82)"}, "showgrid": false}
+{
+    "showline": false,
+    "linewidth": 2,
+    "linecolor": "rgb(204, 204, 204)",
+
+    "ticks": "outside",
+    "tickangle": 0,
+    "showticklabels": true,
+    "tickfont": {
+        "family": "Arial",
+        "size": 12,
+        "color": "rgb(80, 80, 80)"
+        },
+    
+    "showgrid": true,
+    "gridcolor" : "rgb(80,80,80)",
+    "gridwidth" : 1
+}

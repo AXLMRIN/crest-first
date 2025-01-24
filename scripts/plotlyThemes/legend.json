@@ -1,0 +1,13 @@
+{
+    "bgcolor" : "rgba(230,230,230,0.6)",
+    "title" : {
+        "side" : "top center",
+        "font" : {
+            "color" : "rgb(20, 20, 20)"
+        }
+    },
+    "itemdoubleclick" : "toggleothers",
+    "itemclick" : "toggle",
+    "x" : 1.1,
+    "y" : 0.5
+}
