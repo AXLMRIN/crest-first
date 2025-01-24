@@ -8,6 +8,8 @@
     },
     "itemdoubleclick" : "toggleothers",
     "itemclick" : "toggle",
-    "x" : 1.1,
-    "y" : 0.5
+    "orientation" : "h",
+    "x" : 0.5, "xanchor" : "center",
+    "y" : 1, "yanchor" : "bottom", 
+    "entrywidth" : 140
 }

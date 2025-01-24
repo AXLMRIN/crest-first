@@ -1,7 +1,7 @@
 {
     "hoverlabel" : {
         "namelength" : 0,
-        "bgcolor" : "rgba(255,255,255,0.8)",
+        "bgcolor" : "rgba(255,255,255,0.9)",
         "font" : {
             "size" : 12,
             "family" : "Arial"
