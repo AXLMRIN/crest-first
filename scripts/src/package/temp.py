@@ -13,6 +13,7 @@ from plotly.graph_objs._figure import Figure as goFigure
 # Functions
 from numpy import where
 
+#===============================================================================
 def add_traces_to_subplot(fig : goFigure, df : pd.DataFrame,
                           x : str, columns : list[str],
                           row : int, col : int, **kwargs) -> None:
@@ -138,3 +139,16 @@ def add_traces_to_subplot_bi_colours_filling(fig : goFigure, df : pd.DataFrame,
         if 'local' in kwargs: 
             fig.data[-1].update(**kwargs['local'][1])
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+def add_trace(fig : goFigure, name : str, df : pd.DataFrame,
+              x_column : str, y_column : str, parameters : dict):
+    """Takes in the figure to add the trace to, the df is the part of the
+    dataframe to take the dataframe. The name is the name of the group.
+    Finally, the parameters is a dictionnary binding the name to a dictionnary
+    with the parameters."""
+    fig.add_trace(
+        go.Scatter(
+            x = df[x_column],
+            y = df[y_column],
+            **parameters[name])
+    )

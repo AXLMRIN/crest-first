@@ -4,6 +4,7 @@
     "linecolor": "rgb(204, 204, 204)",
 
     "ticks": "outside",
+    "tickwidth" : 1,
     "tickangle": 0,
     "showticklabels": true,
     "tickfont": {

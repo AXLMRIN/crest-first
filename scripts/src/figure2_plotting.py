@@ -13,9 +13,22 @@ import json
 from plotly.graph_objects import Figure as goFigure
 
 # Functions
-from package import load_JSON_parameters
+from package import load_JSON_parameters, add_trace
 # Parameters ===================================================================
+# Data display - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+x_column = "annee"
+y_column = "pourcentage"
+group_by_column : str = "group_by"
 
+# Ticks and axis - Local changes - - - - - - - - - - - - - - - - - - - - - - - -
+x_axis_ticks : dict = {
+    "tickvals" : [2004,2008,2012,2016,2020,2024]   
+}
+y_axis_ticks : dict = {
+    "autorange" : False,
+    "tickvals" : [0,10,20,30],
+    "range" : [-1e-3, 31]
+}
 # Files to open - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 filename_open       : str = "figure_2_preprocessed.csv"
 filename_save       : str = "figure_2.html"
@@ -24,6 +37,7 @@ json_filenames : dict = {
     "yaxis" : "yaxis.json",
     "legend": "legend.json",
     "hover" : "hover.json",
+    "traces_args" : "figure2_traces.json",
     "other" : "other_figure2.json",
 }
 
@@ -38,20 +52,20 @@ df : pd.DataFrame = pd.read_csv(FOLDERNAME + filename_open)
 parameters = load_JSON_parameters(json_filenames)
 
 # Creating the plot ============================================================
-# UPGRADE This could be nice to make it better
-fig : goFigure = px.line(
-    df, x = "annee", y = "pourcentage",
-    color = "colour_style", line_dash= "line_dash_style",
-    labels = {
-        "colour_style" : "Groupe de revues",
-        "line_dash_style" : "Definition du genre"
-    }
-)
+fig : goFigure = go.Figure()
+
 # Axis Customisation 
 fig.update_layout({
-    "xaxis" : parameters["xaxis"],
-    "yaxis" : parameters["yaxis"]
-})
+    "xaxis" : {
+        **parameters["xaxis"],  # theme
+        **x_axis_ticks          # local changes
+        },
+    "yaxis" : {
+        **parameters["yaxis"],  #theme
+        **y_axis_ticks          # local changes
+    }
+})  
+
 
 # Legend Customisation
 fig.update_layout({
@@ -63,15 +77,21 @@ fig.update_layout(
     parameters["hover"]
 )
 
-# FIXME Add hovertemplate
-
 # Other parameters configuration
 fig.update_layout(
     parameters["other"]
 )
 
 # Add the traces ===============================================================
+grouped_df = df.groupby(group_by_column)
 
+for name, sub_dataframe in grouped_df : 
+    add_trace(fig, name, sub_dataframe,
+              x_column = x_column, y_column = y_column,
+              parameters = parameters["traces_args"])
+
+# customise all the traces
+fig.update_traces(parameters["traces_args"]["ALL"])
 
 # Saving the plot ==============================================================
 SAVINGFOLDER = "views/"
