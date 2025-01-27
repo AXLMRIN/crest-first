@@ -46,9 +46,9 @@ json_filenames : dict = {
     "yaxis" : "yaxis.json",
     "legend": "legend.json",
     "hover" : "hover.json",
-    "traces_args" : "figure2_traces.json",
-    "menus" : "figure2_menus.json",
-    "other" : "figure2_other.json",
+    "traces_args" : "figure2/traces.json",
+    "menus" : "figure2/menus.json",
+    "other" : "figure2/other.json",
 }
 
 # Loading the parameters - - - - - - - - - - - - - - - - - - - - - - - - - - - -
