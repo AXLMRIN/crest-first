@@ -5,8 +5,11 @@ import plotly.graph_objs as go
 import numpy as np 
 
 # Native
-import json
-
+# NOTE might be worth finding a cleaner way to do that
+import sys
+sys.path.append(("/Users/axelmorin/Library/Mobile Documents/com~apple~CloudDocs"
+                 "/Axel_tout/Professionnel/Stages/TFE/CREST/workdirectory/Genre"
+                 "/dataVis/plotly-datavis-crest/scripts/src"))
 # Custom 
 
 # Classes
@@ -17,6 +20,7 @@ from package import (
     load_JSON_parameters, add_trace,
     create_update_menus_buttons, bool_out_of_list
     )
+
 # Parameters ===================================================================
 # Data display - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 x_column = {
