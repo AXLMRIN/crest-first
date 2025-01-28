@@ -13,7 +13,14 @@ I am working from the terminal, this means thata  all the path look like `script
 Ultimately you want to run : `python scripts/src/figure2_plotting.py`
 
 # Requirements : 
+This requirement file is only stating my config. A more thorough work is coming for a more general idea.
 Big picture : 
+- `python`
 - `plotly` (v5.24.1)
 - `pandas` (v2.2.2)
 - `numpy` (v1.26.4)
+
+Lines to recreate a venv that will run the code : 
+`conda create -n VENV python=3.12.7`
+`conda install pandas=2.2.2`
+`conda install plotly=5.24.1`
