@@ -260,4 +260,4 @@ fig.update_layout(dict(
 
 # Save the fig ------------------------------------------------------------------
 # fig.write_image('fig_test.png')
-fig.write_html('fig_test.html')
+fig.write_html('views/figure_1.html')
