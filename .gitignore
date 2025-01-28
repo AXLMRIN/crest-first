@@ -1,7 +1,6 @@
 .DS_Store
 data/*
 .vscode/*
-scripts/notebooks/playingAround.ipynb
 __pycache__/
 **/*test*
-scripts/notebooks/Plotly Tut.ipynb
+archive/
