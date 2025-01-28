@@ -51,7 +51,7 @@ original_df.drop(
 # Add the "discipline" column - - - - - - - - - - - - - - - - - - - - - - - - - 
 # >>> Open and clean discipline_per_revue
 discipline_per_revue : pd.DataFrame = pd.read_csv(
-    filepath + "Classification revues - Feuille 1.csv"
+    filepath + "2025-01-14-Classification revues - Feuille 1.csv"
     ).loc[:,["revue", "Dominante"]].dropna()
  
 discipline_per_revue["Dominante"] = discipline_per_revue["Dominante"].replace(
