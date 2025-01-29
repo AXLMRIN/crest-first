@@ -160,7 +160,7 @@ fig = make_subplots(
 # Setting title
 fig.update_layout(dict(
     title = dict(), # No Title
-    width = 1150, height = 1400,
+    width = 700, height = 1400,
     plot_bgcolor = 'white',
 ))
 
