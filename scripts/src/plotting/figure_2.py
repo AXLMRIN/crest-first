@@ -28,7 +28,7 @@ x_column = {
     "name" : "Année de publication"
 }
 y_column = {
-    "column" : "pourcentage",
+    "column" : "proportion",
     "name" : "Part des articles qui convoquent le concept du genre"
 }
 group_by_column : str = "group_by"
@@ -43,7 +43,7 @@ y_axis_ticks : dict = {
     "range" : [-1e-3, 31]
 }
 # Files to open - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-filename_open       : str = "figure_2_preprocessed.csv"
+filename_open       : str = "figure_2.csv"
 filename_save       : str = "figure_2.html"
 json_filenames : dict = {
     "xaxis" : "xaxis.json",
@@ -81,7 +81,7 @@ buttons_dict = {
 # The file is already preprocessed
 
 # NOTE Because I run the file from the terminal the path is not '../../data ...'
-FOLDERNAME = "data/checkpoints/"
+FOLDERNAME = "data/preprocessed/"
 df : pd.DataFrame = pd.read_csv(FOLDERNAME + filename_open)
 
 
