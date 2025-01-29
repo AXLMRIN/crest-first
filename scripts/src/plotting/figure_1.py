@@ -24,8 +24,10 @@ from plotly.graph_objs._figure import Figure as goFigure
 from plotly.subplots import make_subplots
 from itertools import product
 
+# FIXME The whole structure is falling appart, urgent need to redo it all !! 
+
 # Settings =====================================================================
-all_categories = [
+all_disciplines = [
     'Science politique'         ,
     'Sociologie'	            ,
     'Anthropologie'	            ,
@@ -57,32 +59,37 @@ dash_toutes_sauf_genre = 'dashdot'
 # Traces customisation kwargs - - - - - - - - - - - - - - - - - - - - - - - - -
 # HERE change legend and customisation of the main traces of part 1
 part_1_traces_customisation = {
-    'local' : [
-        {
-            'name' : "Revues spécialisées en études de genre",
-            'line' : {
-                'color' : colour_main_traces,
-                'width' : linewidth_main_traces,
-                'dash' : dash_main
-                }
+    'Toutes' : {
+        'local' :
+            [{
+                'name' : "Revues spécialisées en études de genre",
+                'line' : {
+                    'color' : colour_main_traces,
+                    'width' : linewidth_main_traces,
+                    'dash' : dash_main
+                    }
+            }]
         },
-        {
-            'name' : "Moyenne des revues",
-            'line' : {
-                'color' : colour_toutes,
-                'width' : linewidth_main_traces,
-                'dash' : dash_toutes
-                }
+        'Toutes sauf Genre' :{
+            'local' : [{
+                'name' : "Moyenne des revues",
+                'line' : {
+                    'color' : colour_toutes,
+                    'width' : linewidth_main_traces,
+                    'dash' : dash_toutes
+                    }
+            }]
         },
-        {
-            'name' :  ("Moyenne des revues, sans revues de genre"),
-            'line' : {
-                'color' : colour_toutes_sauf_genre,
-                'width' : linewidth_main_traces,
-                'dash' : dash_toutes_sauf_genre
-                }
-        },
-    ]
+        'Genre' :{ 
+            'local' : [{
+                    'name' :  ("Moyenne des revues, sans revues de genre"),
+                    'line' : {
+                        'color' : colour_toutes_sauf_genre,
+                        'width' : linewidth_main_traces,
+                        'dash' : dash_toutes_sauf_genre
+                        }
+                }]
+        }
 }
 
 # HERE to modify the traces that will be in the background of part 1
@@ -114,8 +121,6 @@ part_2_customisation = {
                 'width' : linewidth_main_traces,
                 'dash' : dash_main,
             },
-            # 'fill' : 'tonexty',
-            # 'fillcolor' : fill_colour, 
             'showlegend' : False
         }
     ],
@@ -127,12 +132,13 @@ part_2_customisation = {
 # ==============================================================================
 
 # Variables derived from Settings ----------------------------------------------
-n_rows = len(all_categories) + 1
+n_rows = len(all_disciplines) + 1
 
 # Reading files -----------------------------------------------------------------
 # HERE Modify the path according to your configuration
-dfPlot      = pd.read_csv('data/checkpoints/dfPlot.csv')
-dfPlotRA    = pd.read_csv('data/checkpoints/dfPlotRA.csv')
+dfPlot      = pd.read_csv("data/preprocessed/figure_1.csv").groupby("RA")
+dfPlot_raw = dfPlot.get_group(False)
+dfPlot_ra  = dfPlot.get_group(True)
 
 # Creating subplot figure -------------------------------------------------------
 
@@ -142,7 +148,7 @@ fig = make_subplots(
     specs = [[{}]] * n_rows,
     row_heights= [n_rows - 1] + [1] * (n_rows - 1),
     start_cell = "top-left", 
-    subplot_titles=[""] + all_categories,
+    subplot_titles=[""] + all_disciplines,
 
     shared_xaxes = True,
     print_grid = True,
@@ -209,21 +215,21 @@ fig.update_layout(dict(
     )
 ))
 
-# Add all the categories in the background
-add_traces_to_subplot(fig,dfPlot,
-                      x = "annee",columns=all_categories,
-                      row = 1, col = 1,
-                      **part_1_bg_traces_customisation) # All categories except gender studies
-add_traces_to_subplot(fig, dfPlot,
-                      x = "annee", columns=["Genre"],
-                      row = 1, col = 1, **part_1_bg_traces_customisation)
+# Add all the disciplines in the background
+for discipline, discipline_df_raw in dfPlot_raw.groupby("discipline") : 
+    if (discipline in all_disciplines) | (discipline == "Genre") : 
+        add_traces_to_subplot(fig,discipline_df_raw,
+                            x = "annee",columns=["proportion"],
+                            row = 1, col = 1,
+                            **part_1_bg_traces_customisation) # All categories except gender studies
 
 # Add the colourful traces
-
-add_traces_to_subplot(  fig, dfPlotRA,
-                        x = "annee",
-                        columns = ["Genre", "Toutes", "Toutes sauf Genre"],
-                        row = 1, col = 1, **part_1_traces_customisation)
+for discipline, discipline_df_ra in dfPlot_ra.groupby("discipline") : 
+    if discipline in ["Genre", "Toutes", "Toutes sauf Genre"] : 
+        add_traces_to_subplot(  fig, discipline_df_ra,
+                                x = "annee",
+                                columns = ["proportion"],
+                                row = 1, col = 1, **part_1_traces_customisation[discipline])
 
 # Create the other subfigures ---------------------------------------------------
 yaxis_theme = {
@@ -243,10 +249,17 @@ xaxis_theme = {
     }
 }
 
-# Add the traces for the categories in all_categories
-for i, categorie in enumerate(all_categories):
-    add_traces_to_subplot_bi_colours_filling(fig, dfPlotRA,
-        x = "annee", columns = ['Toutes'] + [categorie],
+# Add the traces for the categories in all_disciplines
+for i, discipline in enumerate(all_disciplines):
+    # FIXME Really need to think of a better way to do it 
+    temp_df = pd.DataFrame({
+        "annee" : dfPlot_ra.groupby("discipline").get_group(discipline)["annee"],
+        "Toutes" : dfPlot_ra.groupby("discipline").get_group('Toutes')["proportion"].to_numpy(),
+        discipline : dfPlot_ra.groupby("discipline").get_group(discipline)["proportion"].to_numpy()
+    })
+    
+    add_traces_to_subplot_bi_colours_filling(fig, temp_df,
+        x = "annee", columns = ['Toutes'] + [discipline],
         row = i + 2, col = 1, **part_2_customisation)
 
 # Apply theme to axis
