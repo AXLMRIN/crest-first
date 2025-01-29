@@ -27,6 +27,7 @@ import numpy as np
 
 # Functions
 
+# FIXME added some 100 * !! need to be cleaner
 # Settings =====================================================================
 filepath : str = "data/"
 filename : str = "2025-01-07-2024-10-29-quinquadef4-neat-abstract-bert.csv"
@@ -51,7 +52,7 @@ original_df.drop(
 # Add the "discipline" column - - - - - - - - - - - - - - - - - - - - - - - - - 
 # >>> Open and clean discipline_per_revue
 discipline_per_revue : pd.DataFrame = pd.read_csv(
-    filepath + "Classification revues - Feuille 1.csv"
+    filepath + "2025-01-14-Classification revues - Feuille 1.csv"
     ).loc[:,["revue", "Dominante"]].dropna()
  
 discipline_per_revue["Dominante"] = discipline_per_revue["Dominante"].replace(
@@ -68,7 +69,7 @@ def what_discipline(revue : str):
         to_return :str =  "<UNK>"
     return to_return
 
-# >>> Add the column
+# >>> Add the column "discipline"
 original_df["discipline"] = original_df["revue"].apply(what_discipline)
 
 # >>> Remove the rows where the discipline was not found
@@ -84,10 +85,12 @@ original_df.drop(
     original_df.loc[
         original_df["discipline"] == "<UNK>",:].index,
     axis = 0, inplace = True)
+
 # Evaluate the proportion - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 # >>> Group the dataframe by discipline
 grouped_df = original_df.groupby("discipline")
 
+# >>> Evaluate the mean of bert_genre for the given discipline and year
 # NOTE there might be a cleanier way of doing it 
 year_set = set(original_df["annee"]) # is sorted
 new_df = []
@@ -99,19 +102,43 @@ for discipline, discipline_df in grouped_df :
             "discipline" : discipline,
             "proportion" : discipline_df.loc[
                 discipline_df["annee"] == year,
-                "bert_genre"].mean()
+                "bert_genre"].mean() * 100
         })
 
+# >>> Add the category "Toutes" and "Toutes sauf Genre"
+for year in year_set:
+    new_df.append({
+        "RA" : False,
+        "annee" : year,
+        "discipline" : "Toutes",
+        "proportion" : original_df.loc[
+            original_df["annee"] == year,
+            "bert_genre"].mean() * 100
+    })
+
+for year in year_set:
+    new_df.append({
+        "RA" : False,
+        "annee" : year,
+        "discipline" : "Toutes sauf Genre",
+        "proportion" : original_df.loc[
+            (original_df["annee"] == year) & (original_df["discipline"] != "Genre"),
+            "bert_genre"].mean() * 100
+    })
+
 # Proceed to the Rolling Average - - - - - - - - - - - - - - - - - - - - - - - -
+# >>> Define a new pandas.Dataframe to evaluate the rolling average
+new_df_grouped = pd.DataFrame(new_df).groupby("discipline")
+
 window : np.ndarray = np.ones(RA_window_size) / RA_window_size
 years_RA : list = list(year_set)[RA_window_size - 1:]
 
-for discipline, discipline_df in grouped_df :
-    RA : np.ndarray = np.convolve(
-        discipline_df["bert_genre"], window,
+for discipline, discipline_df in new_df_grouped :
+    proportion_RA : np.ndarray = np.convolve(
+        discipline_df["proportion"], window,
         mode = "valid")
-    
-    for proportion, year in zip(RA, years_RA): 
+
+    for proportion, year in zip(proportion_RA, years_RA): 
         new_df.append({
             "RA" : True,
             "annee" : year,
