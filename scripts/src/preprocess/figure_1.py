@@ -27,6 +27,7 @@ import numpy as np
 
 # Functions
 
+# FIXME added some 100 * !! need to be cleaner
 # Settings =====================================================================
 filepath : str = "data/"
 filename : str = "2025-01-07-2024-10-29-quinquadef4-neat-abstract-bert.csv"
@@ -101,7 +102,7 @@ for discipline, discipline_df in grouped_df :
             "discipline" : discipline,
             "proportion" : discipline_df.loc[
                 discipline_df["annee"] == year,
-                "bert_genre"].mean()
+                "bert_genre"].mean() * 100
         })
 
 # >>> Add the category "Toutes" and "Toutes sauf Genre"
@@ -112,7 +113,7 @@ for year in year_set:
         "discipline" : "Toutes",
         "proportion" : original_df.loc[
             original_df["annee"] == year,
-            "bert_genre"].mean()
+            "bert_genre"].mean() * 100
     })
 
 for year in year_set:
@@ -122,7 +123,7 @@ for year in year_set:
         "discipline" : "Toutes sauf Genre",
         "proportion" : original_df.loc[
             (original_df["annee"] == year) & (original_df["discipline"] != "Genre"),
-            "bert_genre"].mean()
+            "bert_genre"].mean() * 100
     })
 
 # Proceed to the Rolling Average - - - - - - - - - - - - - - - - - - - - - - - -
