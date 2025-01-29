@@ -91,7 +91,7 @@ def add_traces_to_subplot_bi_colours_filling(fig : goFigure, df : pd.DataFrame,
     except:
         raise ValueError("Didn't specify the bi-colouring-args or did it wrong") 
     # --------------------------------------------------------------------------
-
+    
     # First we need to proceed to few adjustments on the dataframe : 
     # - labelling and grouping
     df = df.loc[:,[x] + columns].copy() # only keeping relevant columns
