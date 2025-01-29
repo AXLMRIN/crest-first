@@ -104,6 +104,27 @@ for discipline, discipline_df in grouped_df :
                 "bert_genre"].mean()
         })
 
+# >>> Add the category "Toutes" and "Toutes sauf Genre"
+for year in year_set:
+    new_df.append({
+        "RA" : False,
+        "annee" : year,
+        "discipline" : "Toutes",
+        "proportion" : original_df.loc[
+            original_df["annee"] == year,
+            "bert_genre"].mean()
+    })
+
+for year in year_set:
+    new_df.append({
+        "RA" : False,
+        "annee" : year,
+        "discipline" : "Toutes sauf Genre",
+        "proportion" : original_df.loc[
+            (original_df["annee"] == year) & (original_df["discipline"] != "Genre"),
+            "bert_genre"].mean()
+    })
+
 # Proceed to the Rolling Average - - - - - - - - - - - - - - - - - - - - - - - -
 # >>> Define a new pandas.Dataframe to evaluate the rolling average
 new_df_grouped = pd.DataFrame(new_df).groupby("discipline")
