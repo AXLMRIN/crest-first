@@ -12,8 +12,8 @@ input : raw dataframe from EOLLION mail from the 2 week of January (mail)
 output : 
     dataframe : 
         columns :  
-        | prop race    | prop genre    | prop classe   | revue | discipline
-        | float         | float          | float          | str   | str
+| prop race | prop genre | prop classe | revue | discipline | number_of_article
+| float      | float       | float        | str   | str        | int
 
 '''
 # Third Parties
@@ -105,7 +105,8 @@ for revue, revue_df in grouped :
             "prop_gender" : revue_df["genre"].mean(),
             "prop_class" : revue_df["class"].mean(),
             "revue" : revue,
-            "discipline" : what_discipline(revue)
+            "discipline" : what_discipline(revue),
+            "number_of_article" : len(revue_df)
         }
     )
 
