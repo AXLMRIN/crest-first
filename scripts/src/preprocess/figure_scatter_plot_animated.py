@@ -34,6 +34,9 @@ filename : str = "2025-01-07-2024-10-29-quinquadef4-neat-abstract-bert.csv"
 
 filepath_save : str = "data/preprocessed/"
 filename_save : str = "figure_scatter_plot_animated.csv"
+filename_RA_save : str = "figure_scatter_plot_animated_RA.csv"
+
+RA_size : int = 4
 
 # Open Files ===================================================================
 # >>> Only keep "bert_genre", "annee", "revue" 
@@ -98,7 +101,7 @@ original_df.drop(
 grouped = original_df.groupby("revue")
 years_set = set(original_df["annee"]) # sorted
 
-new_df = []
+new_df : list[dict] = []
 for year in years_set : 
     for revue, revue_df in grouped : 
         new_df.append(
@@ -117,7 +120,37 @@ for year in years_set :
             }
         )
 
-# Save the df ------------------------------------------------------------------
+new_df : pd.DataFrame = pd.DataFrame(new_df).replace(np.nan, 0)
 
-pd.DataFrame(new_df).to_csv(
-    filepath_save + filename_save, index = False)
+# Runing Average ---------------------------------------------------------------
+window : np.ndarray = np.ones(RA_size) / RA_size
+year_list = list(years_set)[
+                        RA_size // 2 : len(years_set) - (RA_size - RA_size //2)]
+
+new_grouped = new_df.groupby("revue")
+new_df_RA : list[dict] = []
+
+for revue, revue_df in new_grouped : 
+    gender_RA : np.ndarray = np.convolve(window, revue_df["prop_gender"],
+                                         mode = "valid")
+    race_RA : np.ndarray = np.convolve(window, revue_df["prop_race"],
+                                         mode = "valid")
+    class_RA : np.ndarray = np.convolve(window, revue_df["prop_class"],
+                                         mode = "valid")
+    n_o_a_RA : np.ndarray = np.convolve(window, revue_df["number_of_article"],
+                                         mode = "valid")
+    for idx, year in enumerate(year_list) : 
+        new_df_RA.append({
+            "prop_race" : race_RA[idx],
+            "prop_gender" : gender_RA[idx],
+            "prop_class" : class_RA[idx],
+            "revue" : revue,
+            "discipline" : what_discipline(revue),
+            "number_of_article" : n_o_a_RA[idx],
+            "annee" : year
+        })
+
+# Save the dfs ------------------------------------------------------------------
+new_df.to_csv(filepath_save + filename_save, index = False)
+pd.DataFrame(new_df_RA).to_csv(filepath_save + filename_RA_save, index = False)
+

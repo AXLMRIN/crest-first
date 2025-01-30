@@ -22,7 +22,7 @@ filepath : str = "data/preprocessed/"
 filename : str = "figure_scatter_plot_fige.csv"
 
 filepath_save : str = "views/"
-filename_save : str = "figure_scatter_plot_fige.html"
+filename_save : str = "figure_scatter_plot_animated.html"
 
 x_axis = "prop_race"
 y_axis = "prop_gender"
