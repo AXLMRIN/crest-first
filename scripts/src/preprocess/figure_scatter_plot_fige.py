@@ -102,7 +102,7 @@ for revue, revue_df in grouped :
     new_df.append(
         {
             "prop_race" : revue_df["race"].mean(),
-            "prop_genre" : revue_df["genre"].mean(),
+            "prop_gender" : revue_df["genre"].mean(),
             "prop_class" : revue_df["class"].mean(),
             "revue" : revue,
             "discipline" : what_discipline(revue)
