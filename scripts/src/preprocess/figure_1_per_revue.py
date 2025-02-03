@@ -34,7 +34,7 @@ import numpy as np
 
 # Settings =====================================================================
 filepath : str = "data/"
-filename : str = "2025-01-07-2024-10-29-quinquadef4-neat-abstract-bert.csv"
+filename : str = "2025-01-21-quinquadef5-abstracts.csv"
 
 RA_window_size : int = 3
 
@@ -54,6 +54,16 @@ original_df.drop(
     ].index, inplace = True)
 
 # Add the "discipline" column - - - - - - - - - - - - - - - - - - - - - - - - - 
+# NOTE Fixing the names to match the revue csv. 
+
+original_df["revue"] = original_df["revue"].replace({
+    "Géographie, économie, société" : "Géographie, économie et société",
+    "L’Espace géographique" : "L'espace géographique",
+    "Économie rurale" : "Economie rurale",
+    "Natures Sciences Sociétés" : "Nature science et sociétés"
+
+})
+
 # >>> Open and clean discipline_per_revue
 discipline_per_revue : pd.DataFrame = pd.read_csv(
     filepath + "2025-01-14-Classification revues - Feuille 1.csv"
