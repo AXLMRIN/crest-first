@@ -1,0 +1,53 @@
+{
+    "fonts" : {
+        "axis_title" : {
+            "family" : "ITC Franklin Gothic Std",
+            "size" : 12,
+            "color" : "#635F5D"
+        },
+        "x_tick_label" : {
+            "family" : "ITC Franklin Gothic Std",
+            "size" : 10,
+            "color" : "#635F5D"
+        },
+        "y_tick_label" : {
+            "family" : "ITC Franklin Gothic Std",
+            "size" : 10,
+            "color" : "#635F5D"
+        },
+        "annotation" : {
+            "family" : "Georgia",
+            "size" : 10,
+            "color" : "#635F5D"
+        }
+    },
+    "theme-colors" : {
+        "primary" : "#F5F3F2",
+        "secondary" : "#8E8883",
+        "tertiary" : "#FFFFFF"
+    },
+    "line-colors" : {
+        "0-1"  : "#50BA69",
+        "0-2"  : "#7DB88B",
+        "1-1"  : "#E3BA22",
+        "1-2"  : "#BD8F22",
+        "2-1"  : "#E6842A",
+        "2-2"  : "#BA5F06",
+        "3-1"  : "#137B80",
+        "3-2"  : "#005D6E",
+        "4-1"  : "#8E6C8A",
+        "4-2"  : "#684664",
+        "5-1"  : "#978F80",
+        "5-2"  : "#7C715E",
+        "6-1"  : "#BD2D28",
+        "6-2"  : "#E25A42",
+        "7-1"  : "#0F8C79",
+        "7-2"  : "#6BBBA1",
+        "8-1"  : "#E6842A",
+        "8-2"  : "#688BAB",
+        "9-1"  : "#9A3E25",
+        "9-2"  : "#B37055",
+        "10-1" : "#708259",
+        "10-2" : "#95A17E"
+    }
+}
