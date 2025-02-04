@@ -1,17 +1,19 @@
 {
     "showline": true,
     "linewidth": 2,
-    "linecolor": "rgb(20, 20, 20)",
+    "linecolor": "rgb(45,75,76)",
 
     "ticks": "outside",
     "tickwidth" : 1,
     "showticklabels": true,
     "tickangle" : 0,
     "tickfont": {
-        "family": "Arial",
-        "size": 12,
-        "color": "rgb(80, 80, 80)"
+        "family": "ITC Franklin Gothic Std",
+        "size": 15,
+        "color" : "rgb(45,75,76)"
     },
 
-    "showgrid": false
+    "showgrid": true,
+    "gridcolor" : "rgba(45,75,76,0.3)",
+    "gridwidth" : 1
 }

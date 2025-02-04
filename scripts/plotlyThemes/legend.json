@@ -11,6 +11,6 @@
     "itemclick" : "toggle",
     "orientation" : "h",
     "x" : 0.5, "xanchor" : "center",
-    "y" : 1, "yanchor" : "bottom", 
-    "entrywidth" : 120
+    "y" : 1, "yanchor" : "middle", 
+    "entrywidth" : 0.45, "entrywidthmode" : "fraction"
 }

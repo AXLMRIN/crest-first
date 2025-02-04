@@ -3,27 +3,27 @@
         "axis_title" : {
             "family" : "ITC Franklin Gothic Std",
             "size" : 12,
-            "color" : "#635F5D"
+            "color" : "rgb(45,75,76)"
         },
         "x_tick_label" : {
             "family" : "ITC Franklin Gothic Std",
             "size" : 10,
-            "color" : "#635F5D"
+            "color" : "rgb(45,75,76)"
         },
         "y_tick_label" : {
             "family" : "ITC Franklin Gothic Std",
             "size" : 10,
-            "color" : "#635F5D"
+            "color" :"rgb(45,75,76)"
         },
         "annotation" : {
             "family" : "Georgia",
             "size" : 10,
-            "color" : "#635F5D"
+            "color" : "rgb(45,75,76)"
         }
     },
     "theme-colors" : {
         "primary" : "#F5F3F2",
-        "secondary" : "#8E8883",
+        "secondary" : "rgb(45,75,76)",
         "tertiary" : "#FFFFFF"
     },
     "line-colors" : {
