@@ -121,6 +121,16 @@ for discipline, discipline_df in grouped_df :
                 "bert_genre"].mean() * 100
         })
 
+# Estimate the average of all categories
+for year in year_set:
+    new_df.append({
+        "RA" : False,
+        "annee" : year,
+        "discipline" : "Toutes",
+        "proportion" : original_df.loc[
+            original_df["annee"] == year,
+            "bert_genre"].mean() * 100
+    })
 
 # Proceed to the Rolling Average - - - - - - - - - - - - - - - - - - - - - - - -
 # >>> Define a new pandas.Dataframe to evaluate the rolling average
