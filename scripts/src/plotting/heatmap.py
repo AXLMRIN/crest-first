@@ -59,7 +59,7 @@ fig = go.Figure(
     layout = {
         'xaxis':  {'anchor': 'x' , 'domain': [0.0, 1.0  ]},
         'yaxis':  {'anchor': 'y' , 'domain': [0.0, 0.25 ]},
-        'yaxis2': {'anchor': 'y2', 'domain': [0.3, 1.0  ]},
+        'yaxis2': {'anchor': 'y2', 'domain': [0.7, 1.0  ]},
     }
 )
 
@@ -95,7 +95,8 @@ trace_bind = {}
 for discipline, sub_df in df_plot_per_revue.groupby("discipline") : 
     annee_vec, revue_vec, proportion_matrix = make_xyz(sub_df)
     revue_vec, proportion_matrix = sort_revue_and_matrix(revue_vec, proportion_matrix)
-    add_heatmap(fig, x = annee_vec, y = revue_vec, z = proportion_matrix, discipline = discipline)
+    add_heatmap(fig, annees = annee_vec, revue_names = revue_vec, 
+                proportions = proportion_matrix, discipline = discipline)
     trace_bind[discipline + "_heatmap"] = len(fig.data) - 1
 
 
@@ -137,7 +138,8 @@ domain_sizes = [0.7, 0.5875, 0.3, 0.925, 0.625, 0.8125, 0.7375, 0.4375, 0.7375, 
 add_menu(fig, trace_bind, discipline_set, domain_sizes)
 
 # Set one facet active - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+fig.data[trace_bind["Anthropologie_heatmap"]].visible = True
+fig.data[trace_bind["Anthropologie_trace"]].visible = True
 # Save the figure - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 SAVEPATH = "views/"
 # NOTE change 'include_plotlyjs' for lighter files

@@ -26,14 +26,15 @@ COLORAR ={
 }
 
 COLORSCALE = [
-    [0, "blue"],
-    [0.10, "white"],
-    [1.0, "red"],
+    [0, "white"],
+    [0.5, "red"],
+    [1.0, "black"],
 ]
 
 
 # Export functions =============================================================
-def set_max_length(ticks : list[str], n = 30):
+def set_max_length(ticks : list[str], n = 25):
+    ticks = ticks.copy()
     for i in range(len(ticks)) : 
         if len(ticks[i]) > n :
             ticks[i] = ticks[i][:n-3] + "..." 
@@ -42,8 +43,11 @@ def set_max_length(ticks : list[str], n = 30):
                 ticks[i] = " " + ticks[i]
     return ticks
 
-def add_heatmap(fig : go.Figure, x : np.ndarray, y : np.ndarray, discipline,
-                z : np.ndarray) -> None:
+def make_custom_data(revue_names : list[str], n : int) : 
+    return [[revue] * n for revue in revue_names]
+
+def add_heatmap(fig : go.Figure, annees : np.ndarray, revue_names : np.ndarray, 
+                proportions : np.ndarray, discipline : str) -> None:
     """takes in the figure and the 3 necessary vectors : 
     x, y (1D) and z (2D) as well as the kwargs and turn it into a go.Heatmap
     object. 
@@ -54,11 +58,13 @@ def add_heatmap(fig : go.Figure, x : np.ndarray, y : np.ndarray, discipline,
     yet"""
     
     fig.add_trace(
-        go.Heatmap(x = x, y = set_max_length(y), z = z, 
-               colorbar = COLORAR, colorscale = COLORSCALE,
-               xaxis = "x", yaxis = "y2", name = discipline,
-               visible = False, xgap = 5, ygap = 5, 
-               zauto = False, zmin = 0, zmax = 100, zmid = 50)
+        go.Heatmap(x = annees, y = set_max_length(revue_names), z = proportions, 
+            colorbar = COLORAR, colorscale = COLORSCALE,
+            xaxis = "x", yaxis = "y2", name = discipline,
+            visible = False, xgap = 5, ygap = 5, 
+            zauto = False, zmin = 0, zmax = 100, zmid = 50,
+            customdata = make_custom_data(revue_names, len(annees)),
+            hovertemplate = "<b>%{customdata}</b><br>%{z:.2f}")
     )
 
 def visible(discipline, binder) : 
