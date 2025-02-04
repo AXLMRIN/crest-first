@@ -14,7 +14,7 @@ import numpy as np
 # Constants ====================================================================
 COLORAR ={
     "x" : 0.5, "xanchor" : "center",
-    "y" :  1.05, "yanchor" : "middle",
+    "y" :  1.01, "yanchor" : "bottom",
 
     "orientation":'h',
     "thickness" : 20, "len" : 1,
@@ -26,14 +26,23 @@ COLORAR ={
 }
 
 COLORSCALE = [
-    [0, "rgb(255,255,255)"],
-    [0.5, "rgb(255,0,0)"],
-    [1.0, "rgb(0,0,0)"],
+    [0, "blue"],
+    [0.10, "white"],
+    [1.0, "red"],
 ]
 
 
 # Export functions =============================================================
-def add_heatmap(fig : go.Figure, x : np.ndarray, y : np.ndarray,
+def set_max_length(ticks : list[str], n = 30):
+    for i in range(len(ticks)) : 
+        if len(ticks[i]) > n :
+            ticks[i] = ticks[i][:n-3] + "..." 
+        else :
+            while len(ticks[i]) < n :
+                ticks[i] = " " + ticks[i]
+    return ticks
+
+def add_heatmap(fig : go.Figure, x : np.ndarray, y : np.ndarray, discipline,
                 z : np.ndarray) -> None:
     """takes in the figure and the 3 necessary vectors : 
     x, y (1D) and z (2D) as well as the kwargs and turn it into a go.Heatmap
@@ -45,9 +54,40 @@ def add_heatmap(fig : go.Figure, x : np.ndarray, y : np.ndarray,
     yet"""
     
     fig.add_trace(
-        go.Heatmap(x = x, y = y, z = z, 
+        go.Heatmap(x = x, y = set_max_length(y), z = z, 
                colorbar = COLORAR, colorscale = COLORSCALE,
-               xaxis = "x", yaxis = "y2",
+               xaxis = "x", yaxis = "y2", name = discipline,
                visible = False, xgap = 5, ygap = 5, 
                zauto = False, zmin = 0, zmax = 100, zmid = 50)
+    )
+
+def visible(discipline, binder) : 
+    output = [False] * len(binder)
+    output[binder[discipline + "_heatmap"]] = True
+    output[binder[discipline + "_trace"]] = True
+    output[binder["Toutes_trace"]] = True
+    return output
+
+def add_menu(fig : go.Figure, binder : dict, disciplines : list[str],domain_sizes) : 
+    # Use .update_layout() method to add dropdown bar
+    fig.update_layout(
+        updatemenus=[dict(
+            buttons= [
+                {
+                    "label" : discipline,
+                    "method" : "update",
+                    "args" : [
+                        {"visible" : visible(discipline, binder)},
+                        {
+                            "yaxis2" : {"domain" : [dom_size,1.0]}
+                        }
+                    ]
+                } for discipline, dom_size in zip(disciplines, domain_sizes)
+            ],
+            x = 0.5, xanchor = "center",
+            y = 1.15, yanchor = "bottom",
+            type = "buttons",
+            direction = "left", 
+            showactive = True,
+        )]
     )
