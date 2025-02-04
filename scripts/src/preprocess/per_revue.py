@@ -45,7 +45,7 @@ filename_save : str = "figure_1_per_revue.csv"
 # >>> Only keep "bert_genre", "annee", "revue" 
 original_df : pd.DataFrame = pd.read_csv(
     filepath + filename
-    ).loc[:,["annee", "revue", "bert_genre"]].dropna()
+    ).loc[:,["annee", "revue", "bert_genre", "bert_genre_stat"]].dropna()
 
 # >>> Remove the years 2023 
 original_df.drop(
@@ -107,7 +107,16 @@ grouped_df = original_df.groupby("revue")
 # >>> Evaluate the mean of bert_genre for the given revue and year
 # NOTE there might be a cleanier way of doing it 
 year_set = set(original_df["annee"]) # is sorted
+
 new_df = []
+
+def eval(df, year):
+    return 100 * ( df.loc[
+        df["annee"] == year, "bert_genre"
+    ].mean() - df.loc[
+        df["annee"] == year, "bert_genre_stat"
+    ].mean() ) 
+
 for revue, revue_df in grouped_df : 
     for year in year_set:
         new_df.append({
@@ -115,9 +124,7 @@ for revue, revue_df in grouped_df :
             "annee" : year,
             "revue" : revue,
             "discipline" : what_discipline(revue),
-            "proportion" : revue_df.loc[
-                revue_df["annee"] == year,
-                "bert_genre"].mean() * 100
+            "proportion" : eval(revue_df, year)
         })
 
 
