@@ -27,7 +27,6 @@ import numpy as np
 
 # Functions
 
-# FIXME added some 100 * !! need to be cleaner
 # Settings =====================================================================
 filepath : str = "data/"
 filename : str = "2025-01-07-2024-10-29-quinquadef4-neat-abstract-bert.csv"
