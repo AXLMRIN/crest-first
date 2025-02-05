@@ -27,7 +27,7 @@ filename : str = "2025-01-21-quinquadef5-abstracts.csv"
 RA_window_size : int = 3
 
 filepath_save : str = "data/preprocessed/"
-filename_save : str = "figure_1_per_discipline.csv"
+filename_save : str = "prop_per_discipline.csv"
 
 # Open Files ===================================================================
 # >>> Only keep "bert_genre", "annee", "revue" 
