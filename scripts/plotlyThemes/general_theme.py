@@ -1,26 +1,30 @@
 import re
 
-def hex_to_rgb(hex):
-  ''' Source : https://www.30secondsofcode.org/python/s/hex-to-rgb/
-  '''
-  return tuple(int(hex[i:i+2], 16) for i in (0, 2, 4))
+def hex_to_rgb(hex : str):
+    ''' Source : https://www.30secondsofcode.org/python/s/hex-to-rgb/
+    '''
+    if hex.startswith("#") : hex = hex[1:]
+    r,b,g = tuple(int(hex[i:i+2], 16) for i in (1, 2, 4))
+    return f'rgb({r},{g},{b})'
 
 def is_hex_color(color : str) : 
     '''
     '''
     return len(
-       re.sub("^#(?:[0-9a-fA-F]{3}){1,2}$", color,"")
+       re.sub("^#(?:[0-9a-fA-F]{3}){1,2}$","", color)
        ) == 0
 
 def apply_opacity(color, opacity) : 
+    # UPGRADE Make cleaner
     if is_hex_color(color) : 
         color_rgb = hex_to_rgb(color)
     else : color_rgb = color
-    return color_rgb[:-1] + str(opacity) + ")"
+    return "rgba" + color_rgb[3:-1] +"," +  str(opacity) + ")"
 
 class XAxis :
     def __init__(self, secondary_colour : str, fontsize : int = 15, 
                  fontfamily : str = "New York", grid_opacity : float = 1.0):
+
         self.config : dict = {
             "showline": True,
             "linewidth": 2,
@@ -42,7 +46,7 @@ class XAxis :
         }
 
 class YAxis :
-    def __init__(self, secondary_colour : str, fontsize : int, 
+    def __init__(self, secondary_colour : str, fontsize : int = 15, 
                  fontfamily : str = "New York",
                  grid_opacity : float = 1.0):
         self.config : dict = {
@@ -143,14 +147,15 @@ class GeneralTheme :
     def __init__(self,
                 primary_color : str     = "#F5F3F2", 
                 secondary_colour : str  = "rgb(45,75,76)",
-                tertiary_colour : str   = "#FFFFFF",
+                tertiary_colour : str   = "#ffffff",
                 **kwargs):
         
         for key in ["xaxis", "yaxis", "hover", "legend"] : 
             if key not in kwargs : 
                 kwargs[key] = {}
 
-        self.primary_color = primary_color,
+
+        self.primary_color = primary_color
         self.secondary_colour = secondary_colour
         self.tertiary_colour = tertiary_colour
 
