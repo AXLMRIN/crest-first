@@ -21,8 +21,6 @@ def sort_revue_and_matrix(revue_array : list[str],
          for vector in proportion_matrix]
     )
     idx_sorted = np.argsort(moyenne_per_revue)
-    print(moyenne_per_revue)
-
     return np.array(revue_array)[idx_sorted], np.array(proportion_matrix)[idx_sorted,:]
 
 def make_xyz(df : pd.DataFrame) -> tuple[list, list, list] : 
