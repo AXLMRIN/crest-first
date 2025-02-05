@@ -28,8 +28,8 @@ from plotlyThemes.general_theme import GeneralTheme
 
 # Settings =====================================================================
 filenames = {
-    "open_per_revue" : "figure_1_per_revue.csv",
-    "open_per_discipline" : "figure_1_per_discipline.csv",
+    "open_per_revue" : "prop_per_revue.csv",
+    "open_per_discipline" : "prop_per_discipline.csv",
     "save" : "heatmap.html"
 }
 # TODO Think of a better way to manage the settings 
