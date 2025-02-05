@@ -8,6 +8,9 @@ import sys
 sys.path.append(("/Users/axelmorin/Library/Mobile Documents/com~apple~CloudDocs"
                  "/Axel_tout/Professionnel/Stages/TFE/CREST/workdirectory/Genre"
                  "/dataVis/plotly-datavis-crest/scripts/src"))
+sys.path.append(("/Users/axelmorin/Library/Mobile Documents/com~apple~CloudDocs"
+                 "/Axel_tout/Professionnel/Stages/TFE/CREST/workdirectory/Genre"
+                 "/dataVis/plotly-datavis-crest/scripts"))
 
 # Custom 
 
@@ -23,6 +26,7 @@ from package.heatmap import (
 from package.data_loader import (
     load_JSON_parameters
 )
+from plotlyThemes.general_theme import GeneralTheme
 
 # Settings =====================================================================
 filenames = {
@@ -31,12 +35,10 @@ filenames = {
     "save" : "heatmap.html"
 }
 # TODO Think of a better way to manage the settings 
-jsonfiles = {
-    "general" : "general_theme.json",
-    "xaxis" : "xaxis.json",
-    "yaxis" : "yaxis.json",
-    "legend" : "legend.json"
-}
+theme = GeneralTheme(**{
+    "xaxis" : {"grid_opacity" : 0.3},
+    "yaxis" : {"grid_opacity" : 0.3}
+})
 
 # Open files ====================================================================
 OPENPATH  = "data/preprocessed/"
@@ -52,8 +54,6 @@ df_plot_per_discipline = df_plot_per_discipline.loc[
 ]
 df_plot_per_discipline.index = range(len(df_plot_per_discipline))
 
-parameters = load_JSON_parameters(jsonfiles)
-
 # Create the figure =============================================================
 fig = go.Figure(
     layout = {
@@ -63,31 +63,26 @@ fig = go.Figure(
     }
 )
 
-
 # Customise figure general parameters - - - - - - - - - - - - - - - - - - - - - -
 fig.update_layout(
-    paper_bgcolor = parameters["general"]["theme-colors"]["primary"],
-    plot_bgcolor = parameters["general"]["theme-colors"]["primary"], 
+    paper_bgcolor = theme.primary_color,
+    plot_bgcolor = theme.primary_color, 
     height = 800, width = 1200,
     margin=dict(l=200, r=200),
 )
 
 # Customise axis - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 fig.update_layout(
-    xaxis = parameters["xaxis"],
-    yaxis = parameters["yaxis"],
-    yaxis2 = parameters["yaxis"]
+    xaxis = theme.xaxis.config,
+    yaxis = theme.yaxis.config,
+    yaxis2 = theme.yaxis.config
 )
 
 # customise the legend - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+theme.legend.config["x"] =  0.5
+theme.legend.config["y"] = -0.1
 fig.update_layout(
-    legend = parameters["legend"]
-)
-fig.update_layout(
-    legend = dict(
-        x = 0.5,
-        y = -0.1
-    )
+    legend = theme.legend.config
 )
 
 # Create the heatmaps - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -136,6 +131,7 @@ discipline_set = sorted(list(set(df_plot_per_revue["discipline"])))
 domain_sizes = [0.7, 0.5875, 0.3, 0.925, 0.625, 0.8125, 0.7375, 0.4375, 0.7375, 0.5875, 0.3]
 
 add_menu(fig, trace_bind, discipline_set, domain_sizes)
+# BUG The grid color changes for god know why CF data_plotter.add_menu
 
 # Set one facet active - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 fig.data[trace_bind["Anthropologie_heatmap"]].visible = True
@@ -145,3 +141,4 @@ SAVEPATH = "views/"
 # NOTE change 'include_plotlyjs' for lighter files
 fig.write_html(SAVEPATH + filenames["save"],
                include_plotlyjs = True, include_mathjax = False)
+
