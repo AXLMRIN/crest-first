@@ -8,6 +8,8 @@ output :
             annee : int
             proportion_genre  : float
             proportion_classe : float
+            n_articles : float
+            text : str
 
 '''
 # Third Parties
@@ -129,7 +131,7 @@ for revue, revue_df in grouped_df :
             "discipline" : what_discipline(revue),
             "proportion_genre" : eval_genre(revue_df, year),
             "proportion_classe" : eval_classe(revue_df, year),
-            "n_articles" : eval_n_articles(revue_df, year),
+            "n_articles" : eval_n_articles(revue_df, year)
         })
 
 
@@ -172,9 +174,19 @@ for revue, revue_df in new_df_grouped :
             "proportion_classe" : prop_classe,
             "n_articles" : n_articles
         })
+# Add the text column - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+def text(row) : 
+    return (f'<b>{row["revue"]}</b><br>'
+            f'Classe : {int(row["proportion_classe"])} % <br>'
+            f'Genre : {int(row["proportion_genre"])} % <br>'
+            f'{int(row["n_articles"])} articles')
+
+df_to_save = pd.DataFrame(new_df)
+df_to_save.replace(np.nan, 0, inplace=True)
+df_to_save["text"] = df_to_save.apply(text, axis = 1)
 
 # Save to csv - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-pd.DataFrame(new_df).to_csv(
+df_to_save.to_csv(
     filepath_save + filename_save,
     index = False
 )
