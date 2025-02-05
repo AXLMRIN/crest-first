@@ -16,8 +16,14 @@ import numpy as np
 def sort_revue_and_matrix(revue_array : list[str], 
                           proportion_matrix : list[list[float]]
                           ) -> tuple[list[str], list[list[float]]]: 
-    
-    return revue_array, proportion_matrix
+    moyenne_per_revue =  np.array(
+        [pd.Series(vector).dropna().mean() 
+         for vector in proportion_matrix]
+    )
+    idx_sorted = np.argsort(moyenne_per_revue)
+    print(moyenne_per_revue)
+
+    return np.array(revue_array)[idx_sorted], np.array(proportion_matrix)[idx_sorted,:]
 
 def make_xyz(df : pd.DataFrame) -> tuple[list, list, list] : 
     """Takes a dataframe and 3 columns. Makes it into a 2d array
