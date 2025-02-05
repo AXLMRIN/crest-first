@@ -1,13 +1,4 @@
 '''
-What it does : 
-this file is meant to preprocess a data frame for the figure 1 : 
-graph : 
-    x : years
-    y : proportion (with or without rolling average)
-
-input : raw dataframe from EOLLION mail from the 2 week of January (mail) 
-    name : 2025-01-07-2024-10-29-quinquadef4-neat-abstract-bert.csv
-
 output : 
     dataframe : 
         columns :  
@@ -16,9 +7,6 @@ output :
             discipline : str
             annee : int
             proportion : float
-
-    
-!! expected to change !! 
 '''
 # Third Parties
 import pandas as pd
