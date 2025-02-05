@@ -42,6 +42,7 @@ class XAxis :
 
             "showgrid": True,
             "gridcolor" : apply_opacity(secondary_colour, grid_opacity),
+            "zerolinecolor" : apply_opacity(secondary_colour, grid_opacity),
             "gridwidth" : 1
         }
 
@@ -66,6 +67,7 @@ class YAxis :
             
             "showgrid": True,
             "gridcolor" : apply_opacity(secondary_colour, grid_opacity),
+            "zerolinecolor" : apply_opacity(secondary_colour, grid_opacity),
             "gridwidth" : 1
         }
 
