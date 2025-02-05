@@ -71,6 +71,7 @@ def visible(discipline, binder) :
     return output
 
 def add_menu(fig : go.Figure, binder : dict, disciplines : list[str],domain_sizes) : 
+    # BUG updating the view changes the grid color
     # Use .update_layout() method to add dropdown bar
     fig.update_layout(
         updatemenus=[dict(
