@@ -23,9 +23,7 @@ from package.heatmap import (
     add_menu,
     sort_revue_and_matrix
 )
-from package.data_loader import (
-    load_JSON_parameters
-)
+
 from plotlyThemes.general_theme import GeneralTheme
 
 # Settings =====================================================================
