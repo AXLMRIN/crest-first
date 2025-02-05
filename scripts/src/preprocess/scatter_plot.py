@@ -46,8 +46,7 @@ original_df.drop(
     ].index, inplace = True)
 
 # Add the "discipline" column - - - - - - - - - - - - - - - - - - - - - - - - - 
-# NOTE Fixing the names to match the revue csv. 
-
+# Fixing the names to match the revue csv. 
 original_df["revue"] = original_df["revue"].replace({
     "Géographie, économie, société" : "Géographie, économie et société",
     "L’Espace géographique" : "L'espace géographique",
@@ -116,6 +115,11 @@ def eval_classe(df, year):
         df["annee"] == year, "bert_classe_stricte"
     ].mean() ) 
 
+def eval_n_articles(df, year):
+    return len(df.loc[
+        df["annee"] == year, "bert_classe_large"
+    ])
+
 for revue, revue_df in grouped_df : 
     for year in year_set:
         new_df.append({
@@ -124,7 +128,8 @@ for revue, revue_df in grouped_df :
             "revue" : revue,
             "discipline" : what_discipline(revue),
             "proportion_genre" : eval_genre(revue_df, year),
-            "proportion_classe" : eval_classe(revue_df, year)
+            "proportion_classe" : eval_classe(revue_df, year),
+            "n_articles" : eval_n_articles(revue_df, year),
         })
 
 
@@ -147,14 +152,25 @@ for revue, revue_df in new_df_grouped :
         revue_df["proportion_classe"], window,
         mode = "valid")
 
-    for prop_genre, prop_classe, year in zip(proportion_genre_RA, proportion_classe_RA , years_RA): 
+    n_articles_RA : np.ndarray = np.convolve(
+        revue_df["n_articles"], window,
+        mode = "valid"
+    )
+
+    for prop_genre, prop_classe, n_articles, year in zip(
+            proportion_genre_RA,
+            proportion_classe_RA ,
+            n_articles_RA, 
+            years_RA): 
+        
         new_df.append({
             "RA" : True, 
             "annee" : year,
             "revue" : revue,
             "discipline" : what_discipline(revue),
             "proportion_genre" : prop_genre,
-            "proportion_classe" : prop_classe
+            "proportion_classe" : prop_classe,
+            "n_articles" : n_articles
         })
 
 # Save to csv - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
