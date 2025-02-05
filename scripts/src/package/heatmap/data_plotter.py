@@ -25,11 +25,7 @@ COLORAR ={
     "labelalias" : {10 : "Moyenne"}
 }
 
-COLORSCALE = [
-    [0, "white"],
-    [0.5, "red"],
-    [1.0, "black"],
-]
+COLORSCALE = [[0, "white"], [0.5, "red"], [1.0, "black"]]
 
 
 # Export functions =============================================================
