@@ -33,7 +33,7 @@ def create_data(fig : go.Figure, df : pd.DataFrame,
                     "sizemin" : 0, "sizemode" : "area", 'sizeref' : 1/2
                     },
                 opacity = 0.8, 
-                text = df["text"]
+                text = discipline_df["text"]
             )
             for i, (discipline, discipline_df) in enumerate(
                 df.groupby("discipline"))
@@ -52,7 +52,7 @@ def create_frame(df : pd.DataFrame, annee : float,
                     "sizemin" : 0, "sizemode" : "area",
                     },
                 opacity = 0.8,
-                text = df["text"]
+                text = discipline_df["text"]
             )
             for i, (discipline, discipline_df) in enumerate(
                 df.groupby("discipline"))
