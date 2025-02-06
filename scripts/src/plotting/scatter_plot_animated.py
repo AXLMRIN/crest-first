@@ -59,9 +59,19 @@ theme.yaxis.config["range"] = [-5,105]
 
 theme.xaxis.config["showline"] = False
 
+theme.xaxis.config["title"] = {"text" : "Proportion des articles mentionnant la classe"}
+theme.yaxis.config["title"] = {"text" : "Proportion des articles mentionnant la genre"}
+
+theme.legend.config["itemsizing"] = "constant"
+theme.legend.config["itemwidth"] = 50
+theme.legend.config["y"] = 1.1
+theme.legend.config["entrywidth"] = 0.20
+
+
 fig.update_layout(
     xaxis = theme.xaxis.config,
     yaxis = theme.yaxis.config,
+    legend = theme.legend.config
 )
 
 # Create the dots - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -104,7 +114,7 @@ for annee, sub_df in df_plot.groupby("annee"):
         "label": annee,
         "method": "animate"})
 fig.frames = frames
-
+fig.update_layout(sliders = [sliders_dict])
 # Add the control buttons - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 create_control_buttons(fig)
 
@@ -112,5 +122,6 @@ create_control_buttons(fig)
 SAVEPATH = "views/"
 # NOTE change 'include_plotlyjs' for lighter files
 fig.write_html(SAVEPATH + filenames["save"],
+               auto_play = False,
                include_plotlyjs = True, include_mathjax = False)
 
