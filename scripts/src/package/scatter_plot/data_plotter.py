@@ -29,10 +29,11 @@ def add_dots(x : np.ndarray, y : np.ndarray, size : np.ndarray,
         marker = {
             "size" : size,
             "color" : colour,
-            "sizemin" : 0, "sizemode" : "area", 'sizeref' : 1/2
+            "sizemin" : 0, "sizemode" : "area", 'sizeref' : 1/4
             },
         opacity = 0.8, 
-        text = text
+        customdata= text,
+        hovertemplate= "%{customdata}"
     )
 
 def create_data(fig : go.Figure, df : pd.DataFrame,
@@ -69,16 +70,16 @@ def create_control_buttons(fig : go.Figure) :
         {
             "type": "buttons",
             "buttons": [{
-                "label": "Play",
-                "method": "animate",
-                "args": [None]
-            },
-            {
                 "args": [[None], {"frame": {"duration": 0, "redraw": False},
                                   "mode": "immediate",
                                   "transition": {"duration": 0}}],
                 "label": "Pause",
                 "method": "animate"
+            },
+            {
+                "label": "Play",
+                "method": "animate",
+                "args": [None]
             }]
         }
     ])
