@@ -29,7 +29,8 @@ def add_dots(x : np.ndarray, y : np.ndarray, size : np.ndarray,
         marker = {
             "size" : size,
             "color" : colour,
-            "sizemin" : 0, "sizemode" : "area", 'sizeref' : 1/4
+            "sizemin" : 0, "sizemode" : "area", 'sizeref' : 1/4,
+            "line" : {"width" : 0.3}
             },
         opacity = 0.8, 
         customdata= text,
