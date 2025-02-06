@@ -1,6 +1,7 @@
 # Third Parties
 import plotly.graph_objects as go
 import pandas as pd
+import numpy as np
 
 # Native
 # NOTE might be worth finding a cleaner way to do that
@@ -20,21 +21,29 @@ from plotlyThemes.general_theme import TracesColours
 
 # Settings =====================================================================
 
+def add_dots(x : np.ndarray, y : np.ndarray, size : np.ndarray,
+             text : np.ndarray, name : str, colour : str) -> go.Scatter :
+    return go.Scatter(
+        x = x, y = y,
+        mode = "markers", name = name, 
+        marker = {
+            "size" : size,
+            "color" : colour,
+            "sizemin" : 0, "sizemode" : "area", 'sizeref' : 1/2
+            },
+        opacity = 0.8, 
+        text = text
+    )
+
 def create_data(fig : go.Figure, df : pd.DataFrame,
                 traces_color : TracesColours) -> None : 
     fig.update(data = [
-            go.Scatter(
-                x = discipline_df["proportion_classe"], 
-                y = discipline_df["proportion_genre"],
-                mode = "markers", name = discipline, 
-                marker = {
-                    "size" : discipline_df["n_articles"],
-                    "color" : traces_color[f'{i}-1'],
-                    "sizemin" : 0, "sizemode" : "area", 'sizeref' : 1/2
-                    },
-                opacity = 0.8, 
-                text = discipline_df["text"]
-            )
+            add_dots(discipline_df["proportion_classe"],
+                     discipline_df["proportion_genre"],
+                     discipline_df["n_articles"],
+                     discipline_df["text"],
+                     discipline, traces_color[f'{i}-1']
+                     )
             for i, (discipline, discipline_df) in enumerate(
                 df.groupby("discipline"))
     ])
@@ -42,18 +51,12 @@ def create_data(fig : go.Figure, df : pd.DataFrame,
 def create_frame(df : pd.DataFrame, annee : float, 
                  traces_color : TracesColours) -> go.Frame:
     return go.Frame(data = [
-            go.Scatter(
-                x = discipline_df["proportion_classe"], 
-                y = discipline_df["proportion_genre"],
-                mode = "markers", name = discipline, 
-                marker = {
-                    "size" : discipline_df["n_articles"],
-                    "color" : traces_color[f'{i}-1'],
-                    "sizemin" : 0, "sizemode" : "area",
-                    },
-                opacity = 0.8,
-                text = discipline_df["text"]
-            )
+            add_dots(discipline_df["proportion_classe"],
+                     discipline_df["proportion_genre"],
+                     discipline_df["n_articles"],
+                     discipline_df["text"],
+                     discipline, traces_color[f'{i}-1']
+                     )
             for i, (discipline, discipline_df) in enumerate(
                 df.groupby("discipline"))
         ], name = annee
