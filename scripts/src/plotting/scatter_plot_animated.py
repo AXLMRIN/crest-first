@@ -31,7 +31,10 @@ filenames = {
 }
 
 # TODO Think of a better way to manage the settings
-theme = GeneralTheme(**{})
+theme = GeneralTheme(**{
+    "xaxis" : {"title" : "Proportion des articles mentionnant la classe"},
+    "yaxis" : {"title" : "Proportion des articles mentionnant le genre"}
+})
 
 # Open Files ===================================================================
 selected_columns = ["revue", "discipline", "annee","proportion_genre",
@@ -59,13 +62,11 @@ theme.yaxis.config["range"] = [-5,105]
 
 theme.xaxis.config["showline"] = False
 
-theme.xaxis.config["title"] = {"text" : "Proportion des articles mentionnant la classe"}
-theme.yaxis.config["title"] = {"text" : "Proportion des articles mentionnant la genre"}
 
 theme.legend.config["itemsizing"] = "constant"
 theme.legend.config["itemwidth"] = 50
 theme.legend.config["y"] = 1.1
-theme.legend.config["entrywidth"] = 0.20
+theme.legend.config["entrywidth"] = 0.25
 
 
 fig.update_layout(
@@ -82,19 +83,26 @@ create_data(fig,
 
 sliders_dict = {
     "active": 0,
-    "yanchor": "top",
-    "xanchor": "left",
     "currentvalue": {
-        "font": {"size": 20},
-        "prefix": "Year:",
+        "font": {
+            "size": 20,
+            "family" : "New York"
+        },
+        "prefix": "Année : ",
         "visible": True,
-        "xanchor": "right"
+        "xanchor": "left",
+        "offset" : 20
     },
-    "transition": {"duration": 300, "easing": "cubic-in-out"},
+    "transition": {
+        "duration": 30000,
+        "easing": "cubic-in-out"
+    },
     "pad": {"b": 10, "t": 50},
     "len": 0.9,
-    "x": 0.1,
-    "y": 0,
+
+    "x": 0.5, "xanchor": "center",
+    "y": -0.15, "yanchor": "middle",
+
     "steps": []
     }
 
