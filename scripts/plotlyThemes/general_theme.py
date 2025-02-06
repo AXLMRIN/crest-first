@@ -23,7 +23,8 @@ def apply_opacity(color, opacity) :
 
 class XAxis :
     def __init__(self, secondary_colour : str, fontsize : int = 15, 
-                 fontfamily : str = "New York", grid_opacity : float = 1.0):
+                 fontfamily : str = "New York", title : str = "X Label",
+                 grid_opacity : float = 1.0):
 
         self.config : dict = {
             "showline": True,
@@ -43,12 +44,22 @@ class XAxis :
             "showgrid": True,
             "gridcolor" : apply_opacity(secondary_colour, grid_opacity),
             "zerolinecolor" : apply_opacity(secondary_colour, grid_opacity),
-            "gridwidth" : 1
+            "gridwidth" : 1,
+
+            "title" : {
+                "text" : title,
+                "font" : {
+                    "family" : fontfamily,
+                    "size" : 1.2 * fontsize,
+                    "color" : secondary_colour
+                }
+            }
+            
         }
 
 class YAxis :
     def __init__(self, secondary_colour : str, fontsize : int = 15, 
-                 fontfamily : str = "New York",
+                 fontfamily : str = "New York", title : str = "Y Label",
                  grid_opacity : float = 1.0):
         self.config : dict = {
             "showline": False,
@@ -68,7 +79,16 @@ class YAxis :
             "showgrid": True,
             "gridcolor" : apply_opacity(secondary_colour, grid_opacity),
             "zerolinecolor" : apply_opacity(secondary_colour, grid_opacity),
-            "gridwidth" : 1
+            "gridwidth" : 1,
+
+            "title" : {
+                "text" : title,
+                "font" : {
+                    "family" : fontfamily,
+                    "size" : 1.2 * fontsize,
+                    "color" : secondary_colour
+                }
+            }
         }
 
 class Hover : 
@@ -142,7 +162,7 @@ class Legend :
             "orientation" : "h",
             "x" : position[0], "xanchor" : anchor[0],
             "y" : position[1], "yanchor" : anchor[1], 
-            "entrywidth" : 0.45, "entrywidthmode" : "fraction"
+            "entrywidth" : 0.45, "entrywidthmode" : "fraction",
         }
 
 class GeneralTheme : 
