@@ -167,9 +167,9 @@ class Legend :
 
 class GeneralTheme : 
     def __init__(self,
-                primary_color : str     = "#F5F3F2", 
-                secondary_colour : str  = "rgb(45,75,76)",
-                tertiary_colour : str   = "#ffffff",
+                primary_color : str     = "white", 
+                secondary_colour : str  = "rgb(34,34,34)",
+                tertiary_colour : str   = "rgba(245, 243, 242, 0.4)",
                 **kwargs):
         
         for key in ["xaxis", "yaxis", "hover", "legend"] : 

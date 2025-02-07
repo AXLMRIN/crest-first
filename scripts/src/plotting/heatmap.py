@@ -11,12 +11,12 @@ sys.path.append(("/Users/axelmorin/Library/Mobile Documents/com~apple~CloudDocs"
 sys.path.append(("/Users/axelmorin/Library/Mobile Documents/com~apple~CloudDocs"
                  "/Axel_tout/Professionnel/Stages/TFE/CREST/workdirectory/Genre"
                  "/dataVis/plotly-datavis-crest/scripts"))
-
 # Custom 
 
 # Classes
 
 # Functions
+from copy import deepcopy
 from package.heatmap import (
     make_xyz,
     add_heatmap,
@@ -34,8 +34,14 @@ filenames = {
 }
 # TODO Think of a better way to manage the settings 
 theme = GeneralTheme(**{
-    "xaxis" : {"grid_opacity" : 0.3},
-    "yaxis" : {"grid_opacity" : 0.3}
+    "xaxis" : {
+        "grid_opacity" : 0.15,
+        "title" : "Année de publication"
+    },
+    "yaxis" : {
+        "grid_opacity" : 0.15,
+        "title" : "Proportion des articles<br>mentionnant le genre"
+    }
 })
 
 # Open files ====================================================================
@@ -57,7 +63,7 @@ fig = go.Figure(
     layout = {
         'xaxis':  {'anchor': 'x' , 'domain': [0.0, 1.0  ]},
         'yaxis':  {'anchor': 'y' , 'domain': [0.0, 0.25 ]},
-        'yaxis2': {'anchor': 'y2', 'domain': [0.7, 1.0  ]},
+        'yaxis2': {'anchor': 'y2', 'domain': [0.72, 1.0  ]},
     }
 )
 
@@ -70,15 +76,18 @@ fig.update_layout(
 )
 
 # Customise axis - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+theme2 = deepcopy(theme)
+theme2.yaxis.config["title"]["text"] = "Revue"
 fig.update_layout(
     xaxis = theme.xaxis.config,
     yaxis = theme.yaxis.config,
-    yaxis2 = theme.yaxis.config
+    yaxis2 = theme2.yaxis.config
 )
 
 # customise the legend - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 theme.legend.config["x"] =  0.5
-theme.legend.config["y"] = -0.1
+theme.legend.config["y"] = -0.15
+
 fig.update_layout(
     legend = theme.legend.config
 )
@@ -102,7 +111,7 @@ fig.add_trace(
                 xaxis = "x", yaxis = "y", mode = "lines",
                 name = "Moyenne de toutes les disciplines", 
                 line = dict(
-                   color = "black", dash = "longdash"
+                   color = "rgb(194,6,26)"
                 ),
                 visible = True)
 )
@@ -114,7 +123,7 @@ for discipline, sub_df in df_plot_per_discipline.groupby("discipline") :
         go.Scatter(x = sub_df["annee"], y = sub_df["proportion"],
                 xaxis = "x", yaxis = "y", mode = "lines", 
                 name = discipline + ", moyenne des revues",
-                line = dict(color = "black" ),
+                line = dict(color = "rgb(65,115,185)" ),
                 visible = False)
     )
     trace_bind[discipline + "_trace"] = len(fig.data) - 1
@@ -125,11 +134,20 @@ for discipline, sub_df in df_plot_per_discipline.groupby("discipline") :
 
 
 # Create the menu - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-discipline_set = sorted(list(set(df_plot_per_revue["discipline"])))
-domain_sizes = [0.7, 0.5875, 0.3, 0.925, 0.625, 0.8125, 0.7375, 0.4375, 0.7375, 0.5875, 0.3]
-
-add_menu(fig, trace_bind, discipline_set, domain_sizes)
-# BUG The grid color changes for god know why CF data_plotter.add_menu
+discipline_sizes = {
+    'Anthropologie'             : 0.72,
+    # 'Aréale'                    : 0.615,
+    # 'Autre interdisciplinaire'  : 0.3, 
+    'Démographie'               : 0.93, 
+    'Economie'                  : 0.65, 
+    'Genre'                     : 0.825, 
+    'Géographie'                : 0.755, 
+    'Histoire'                  : 0.475, 
+    'SIC'                       : 0.755, 
+    'Science politique'         : 0.615, 
+    'Sociologie'                : 0.3
+}
+add_menu(fig, trace_bind, discipline_sizes, theme2.yaxis)
 
 # Set one facet active - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 fig.data[trace_bind["Anthropologie_heatmap"]].visible = True

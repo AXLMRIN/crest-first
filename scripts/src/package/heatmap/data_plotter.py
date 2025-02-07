@@ -25,7 +25,12 @@ COLORAR ={
     "labelalias" : {10 : "Moyenne"}
 }
 
-COLORSCALE = [[0, "white"], [0.5, "red"], [1.0, "black"]]
+COLORSCALE = [
+    [0,    "rgb(199, 198, 197)"],
+    [0.25, "rgb(196, 163, 167)"],
+    [0.5,  "rgb(198, 124, 133)"],
+    [0.75, "rgb(202, 75, 93)"],
+    [1.0,  "rgb(192, 0, 25)"]]
 
 
 # Export functions =============================================================
@@ -70,8 +75,21 @@ def visible(discipline, binder) :
     output[binder["Toutes_trace"]] = True
     return output
 
-def add_menu(fig : go.Figure, binder : dict, disciplines : list[str],domain_sizes) : 
-    # BUG updating the view changes the grid color
+def add_menu(fig : go.Figure, binder : dict, discipline_sizes : list[str],
+             y_axis_theme) : 
+    domain_sizes = [
+        0.7,            # Anthropologie
+        0.775,          # Aréale
+        0.6625,         # Autre interdisciplinaire
+        0.925,          # Démographie
+        0.8125,         # Économie
+        0.8125,         # Genre
+        0.7375,         # Géographie
+        0.7,            # Histoire
+        0.7375,         # SIC
+        0.775,          # Science Politique
+        0.7375]         # Sociologie
+    
     # Use .update_layout() method to add dropdown bar
     fig.update_layout(
         updatemenus=[dict(
@@ -82,10 +100,13 @@ def add_menu(fig : go.Figure, binder : dict, disciplines : list[str],domain_size
                     "args" : [
                         {"visible" : visible(discipline, binder)},
                         {
-                            "yaxis2" : {"domain" : [dom_size,1.0]}
+                            "yaxis2" : {
+                                "domain" : [discipline_sizes[discipline],1.0],
+                                **y_axis_theme.config
+                            }
                         }
                     ]
-                } for discipline, dom_size in zip(disciplines, domain_sizes)
+                } for discipline in discipline_sizes
             ],
             x = 0.5, xanchor = "center",
             y = 1.15, yanchor = "bottom",
