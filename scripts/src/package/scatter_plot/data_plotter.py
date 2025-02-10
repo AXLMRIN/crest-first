@@ -21,8 +21,18 @@ from plotlyThemes.general_theme import TracesColours
 
 # Settings =====================================================================
 
+def is_grey(colour : str) : 
+    # Assume this is HEX
+    r,g,b = colour[1:3], colour[3:5], colour[5:7]
+    return (r == g) & (g == b)
+
+def is_legendonly(colour : str):
+    if is_grey(colour) : return "legendonly"
+    return True
+
 def add_dots(x : np.ndarray, y : np.ndarray, size : np.ndarray,
-             text : np.ndarray, name : str, colour : str) -> go.Scatter :
+             text : np.ndarray, name : str, colour : str,
+             visible : bool | str = True) -> go.Scatter :
     return go.Scatter(
         x = x, y = y,
         mode = "markers", name = name, 
@@ -34,7 +44,8 @@ def add_dots(x : np.ndarray, y : np.ndarray, size : np.ndarray,
             },
         opacity = 0.8, 
         customdata= text,
-        hovertemplate= "%{customdata}"
+        hovertemplate= "%{customdata}",
+        # visible = visible
     )
 
 def create_data(fig : go.Figure, df : pd.DataFrame,
@@ -44,10 +55,10 @@ def create_data(fig : go.Figure, df : pd.DataFrame,
                      discipline_df["proportion_genre"],
                      discipline_df["n_articles"],
                      discipline_df["text"],
-                     discipline, traces_color[f'{i}-1']
+                     discipline, traces_color[discipline],
+                     is_legendonly(traces_color[discipline])
                      )
-            for i, (discipline, discipline_df) in enumerate(
-                df.groupby("discipline"))
+            for discipline, discipline_df in df.groupby("discipline")
     ])
 
 def create_frame(df : pd.DataFrame, annee : float, 
@@ -57,10 +68,9 @@ def create_frame(df : pd.DataFrame, annee : float,
                      discipline_df["proportion_genre"],
                      discipline_df["n_articles"],
                      discipline_df["text"],
-                     discipline, traces_color[f'{i}-1']
+                     discipline, traces_color[discipline]
                      )
-            for i, (discipline, discipline_df) in enumerate(
-                df.groupby("discipline"))
+            for discipline, discipline_df in df.groupby("discipline")
         ], name = annee
     )
 

@@ -110,6 +110,7 @@ class Hover :
 
 class TracesColours : 
     def __init__(self) : 
+        # TODO Clean that up
         self.config : dict = {
             "0-1"  : "#50BA69",
             "0-2"  : "#7DB88B",
@@ -133,17 +134,17 @@ class TracesColours :
             "9-2"  : "#B37055",
             "10-1" : "#708259",
             "10-2" : "#95A17E",
-            'Anthropologie'             : "#E3BA22",
-            'Aréale'                    : "#AAAAAA",
-            'Autre interdisciplinaire'  : "#AAAAAA",
+            'Anthropologie'             : "#F2DA57",
+            'Aréale'                    : "#8E8E8E",
+            'Autre interdisciplinaire'  : "#AFAFAF",
             'Démographie'               : "#E6842A",
             'Économie'                  : "#137B80",
             'Genre'                     : "#8E6C8A",
             'Géographie'                : "#5C8100",
             'Histoire'                  : "#BD2D28",
-            'SIC'                       : "#E6842A",
-            'Science politique'         : "#AAAAAA",
-            'Sociologie'                : "#AAAAAA"
+            'SIC'                       : "#3A3A3A",
+            'Science politique'         : "#E6842A",
+            'Sociologie'                : "#BD8F22"
         }
     def __getitem__(self, key):
         return self.config[key]
@@ -180,7 +181,7 @@ class GeneralTheme :
     def __init__(self,
                 primary_color : str     = "white", 
                 secondary_colour : str  = "rgb(34,34,34)",
-                tertiary_colour : str   = "rgba(245, 243, 242, 0.4)",
+                tertiary_colour : str   = "rgba(200,200,200, 0.4)",
                 **kwargs):
         
         for key in ["xaxis", "yaxis", "hover", "legend"] : 

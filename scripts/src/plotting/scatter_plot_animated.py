@@ -123,8 +123,9 @@ for annee, sub_df in df_plot.groupby("annee"):
         "method": "animate"})
 fig.frames = frames
 fig.update_layout(sliders = [sliders_dict])
+
 # Add the control buttons - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-create_control_buttons(fig)
+# create_control_buttons(fig)
 
 # Save the figure - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 SAVEPATH = "views/"
