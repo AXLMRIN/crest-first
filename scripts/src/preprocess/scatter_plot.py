@@ -63,7 +63,7 @@ discipline_per_revue : pd.DataFrame = pd.read_csv(
     ).loc[:,["revue", "Dominante"]].dropna()
  
 discipline_per_revue["Dominante"] = discipline_per_revue["Dominante"].replace(
-    "Économie", "Economie")
+    "Economie", "Économie")
 
 def what_discipline(revue : str):
 
