@@ -141,8 +141,8 @@ for discipline, sub_df in df_plot_per_discipline.groupby("discipline") :
 # Create the menu - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 discipline_sizes = {
     'Anthropologie'             : 0.72,
-    # 'Aréale'                    : 0.615,
-    # 'Autre interdisciplinaire'  : 0.3, 
+    'Aréale'                    : 0.615,
+    'Autre interdisciplinaire'  : 0.3, 
     'Démographie'               : 0.93, 
     'Économie'                  : 0.65, 
     'Genre'                     : 0.825, 
