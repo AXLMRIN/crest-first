@@ -93,9 +93,9 @@ new_df = []
 for discipline, sub_df in original_df.groupby("discipline"):
     r_women = 100 * sub_df["femme"].mean()
     r_homme = 100 - r_women
-    r_women_genre = (sub_df["femme"] * sub_df["bert_genre"]).mean()
-    r_homme_genre = ((1 - sub_df["femme"]) * sub_df["bert_genre"]).mean()
-    new_df.append({
+    r_women_genre = 100 * (sub_df["femme"] * sub_df["bert_genre"]).mean()
+    r_homme_genre = 100 * ((1 - sub_df["femme"]) * sub_df["bert_genre"]).mean()
+    new_df.append({"discipline" : discipline,
         "r_w" : r_women, "r_m" : r_homme,
         "r_w_g" : r_women_genre, "r_m_g" : r_homme_genre
     })
