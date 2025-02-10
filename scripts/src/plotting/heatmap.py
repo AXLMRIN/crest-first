@@ -139,7 +139,7 @@ discipline_sizes = {
     # 'Aréale'                    : 0.615,
     # 'Autre interdisciplinaire'  : 0.3, 
     'Démographie'               : 0.93, 
-    'Economie'                  : 0.65, 
+    'Économie'                  : 0.65, 
     'Genre'                     : 0.825, 
     'Géographie'                : 0.755, 
     'Histoire'                  : 0.475, 
