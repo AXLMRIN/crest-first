@@ -61,11 +61,11 @@ def add_heatmap(fig : go.Figure, annees : np.ndarray, revue_names : np.ndarray,
     fig.add_trace(
         go.Heatmap(x = annees, y = set_max_length(revue_names), z = proportions, 
             colorbar = COLORAR, colorscale = COLORSCALE,
-            xaxis = "x", yaxis = "y2", name = discipline,
+            xaxis = "x2", yaxis = "y2", name = discipline,
             visible = False, xgap = 5, ygap = 5, 
             zauto = False, zmin = 0, zmax = 100, zmid = 50,
             customdata = make_custom_data(revue_names, len(annees)),
-            hovertemplate = "<b>%{customdata}</b><br>%{z:.2f}")
+            hovertemplate = "<b>%{customdata}</b><br>%{z:.1f} %")
     )
 
 def visible(discipline, binder) : 

@@ -63,7 +63,8 @@ fig = go.Figure(
     layout = {
         'xaxis':  {'anchor': 'x' , 'domain': [0.0, 1.0  ]},
         'yaxis':  {'anchor': 'y' , 'domain': [0.0, 0.25 ]},
-        'yaxis2': {'anchor': 'y2', 'domain': [0.72, 1.0  ]},
+        'xaxis2' : {'anchor' : 'y2', 'domain' : [0.0, 1.0]},
+        'yaxis2': {'anchor': 'y2', 'domain':  [0.72, 1.0  ]},
     }
 )
 
@@ -72,7 +73,7 @@ fig.update_layout(
     paper_bgcolor = theme.primary_color,
     plot_bgcolor = theme.primary_color, 
     height = 800, width = 1200,
-    margin=dict(l=200, r=200),
+    margin=dict(l=200, r=50),
 )
 
 # Customise axis - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -108,11 +109,13 @@ grouped_discipline = df_plot_per_discipline.groupby("discipline")
 sub_df = grouped_discipline.get_group("Toutes")
 fig.add_trace(
     go.Scatter( x = sub_df["annee"], y = sub_df["proportion"],
-                xaxis = "x", yaxis = "y", mode = "lines",
+                xaxis = "x", yaxis = "y", mode = "lines+markers",
                 name = "Moyenne de toutes les disciplines", 
                 line = dict(
                    color = "rgb(194,6,26)"
                 ),
+                marker = dict(size = 4),
+                hovertemplate="<b>%{x}</b><br>%{y:.1f} %",
                 visible = True)
 )
 trace_bind["Toutes_trace"] = len(fig.data) - 1
@@ -121,9 +124,11 @@ for discipline, sub_df in df_plot_per_discipline.groupby("discipline") :
     if discipline == "Toutes" : continue
     fig.add_trace(
         go.Scatter(x = sub_df["annee"], y = sub_df["proportion"],
-                xaxis = "x", yaxis = "y", mode = "lines", 
+                xaxis = "x", yaxis = "y", mode = "lines+markers", 
                 name = discipline + ", moyenne des revues",
                 line = dict(color = "rgb(65,115,185)" ),
+                marker = dict(size = 4),
+                hovertemplate="<b>%{x}</b><br>%{y:.1f} %",
                 visible = False)
     )
     trace_bind[discipline + "_trace"] = len(fig.data) - 1
