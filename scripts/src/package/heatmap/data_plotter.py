@@ -25,6 +25,15 @@ COLORAR ={
     "labelalias" : {10 : "Moyenne"}
 }
 
+# https://www.learnui.design/tools/data-color-picker.html#divergent
+# COLORSCALE = [
+#     [0,    "#488f31"],
+#     [0.25, "#b7b66c"],
+#     [0.5,  "#ffe4c3"],
+#     [0.75, "#ec9974"],
+#     [1.0,  "#de425b"]]
+
+# https://github.com/ucarion/cielab.io?tab=readme-ov-file
 COLORSCALE = [
     [0,    "rgb(199, 198, 197)"],
     [0.25, "rgb(196, 163, 167)"],

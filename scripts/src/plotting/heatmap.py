@@ -126,13 +126,13 @@ for discipline, sub_df in df_plot_per_discipline.groupby("discipline") :
         go.Scatter(x = sub_df["annee"], y = sub_df["proportion"],
                 xaxis = "x", yaxis = "y", mode = "lines+markers", 
                 name = discipline + ", moyenne des revues",
-                line = dict(color = "rgb(65,115,185)" ),
+                # line = dict(color = theme.traces_color[discipline] ),
+                line = dict(color = "rgb(65, 115, 185)" ),
                 marker = dict(size = 4),
                 hovertemplate="<b>%{x}</b><br>%{y:.1f} %",
                 visible = False)
     )
     trace_bind[discipline + "_trace"] = len(fig.data) - 1
-
 
 
 # Display one discipline - - - - - - - - - - - - - - - - - - - - - - - - - - - -

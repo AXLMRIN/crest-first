@@ -132,7 +132,18 @@ class TracesColours :
             "9-1"  : "#9A3E25",
             "9-2"  : "#B37055",
             "10-1" : "#708259",
-            "10-2" : "#95A17E"
+            "10-2" : "#95A17E",
+            'Anthropologie'             : "#E3BA22",
+            'Aréale'                    : "#AAAAAA",
+            'Autre interdisciplinaire'  : "#AAAAAA",
+            'Démographie'               : "#E6842A",
+            'Économie'                  : "#137B80",
+            'Genre'                     : "#8E6C8A",
+            'Géographie'                : "#5C8100",
+            'Histoire'                  : "#BD2D28",
+            'SIC'                       : "#E6842A",
+            'Science politique'         : "#AAAAAA",
+            'Sociologie'                : "#AAAAAA"
         }
     def __getitem__(self, key):
         return self.config[key]
