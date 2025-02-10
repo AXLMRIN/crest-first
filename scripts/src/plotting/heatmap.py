@@ -78,6 +78,7 @@ fig.update_layout(
 )
 
 # Customise axis - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+theme.xaxis.config["type"] = "date"
 theme2 = deepcopy(theme)
 theme2.yaxis.config["title"]["text"] = "Revue"
 fig.update_layout(
