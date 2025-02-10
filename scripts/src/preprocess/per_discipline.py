@@ -99,21 +99,41 @@ year_set = set(original_df["annee"]) # is sorted
 
 new_df = []
 
-def eval(df, year):
+def eval_restr(df, year):
     return 100 * ( df.loc[
         df["annee"] == year, "bert_genre"
     ].mean() - df.loc[
         df["annee"] == year, "bert_genre_stat"
     ].mean() ) 
 
+def eval_ext(df, year):
+    return 100 * df.loc[
+        df["annee"] == year, "bert_genre"
+    ].mean()
+
+# >>> Evalutation 'restrainte'
 for discipline, discipline_df in grouped_df : 
     for year in year_set:
         new_df.append({
             "RA" : False,
             "annee" : year,
             "discipline" : discipline,
-            "proportion" : eval(discipline_df, year),
+            "proportion" : eval_restr(discipline_df, year),
+            "definition" : "restr"
         })
+
+# >>> Evalutation 'extensive'
+for discipline, discipline_df in grouped_df : 
+    for year in year_set:
+        new_df.append({
+            "RA" : False,
+            "annee" : year,
+            "discipline" : discipline,
+            "proportion" : eval_ext(discipline_df, year),
+            "definition" : "ext"
+        })
+
+    
 
 # Estimate the average of all categories
 for year in year_set:
@@ -121,12 +141,22 @@ for year in year_set:
         "RA" : False,
         "annee" : year,
         "discipline" : "Toutes",
-        "proportion" : eval(original_df, year)
+        "proportion" : eval_restr(original_df, year),
+        "definition" : "restr"
+    })
+
+for year in year_set:
+    new_df.append({
+        "RA" : False,
+        "annee" : year,
+        "discipline" : "Toutes",
+        "proportion" : eval_ext(original_df, year),
+        "definition" : "ext"
     })
 
 # Proceed to the Rolling Average - - - - - - - - - - - - - - - - - - - - - - - -
 # >>> Define a new pandas.Dataframe to evaluate the rolling average
-new_df_grouped = pd.DataFrame(new_df).groupby("discipline")
+new_df_grouped = pd.DataFrame(new_df).groupby("definition")
 
 window : np.ndarray = np.ones(RA_window_size) / RA_window_size
 
@@ -134,18 +164,20 @@ years : list = list(year_set)
 years_RA : list = years[RA_window_size // 2 :
                          len(years) - (RA_window_size - RA_window_size // 2)]
 
-for discipline, discipline_df in new_df_grouped :
-    proportion_RA : np.ndarray = np.convolve(
-        discipline_df["proportion"], window,
-        mode = "valid")
+for definition, definition_df in new_df_grouped : 
+    for discipline, discipline_df in definition_df.groupby("discipline") :
+        proportion_RA : np.ndarray = np.convolve(
+            discipline_df["proportion"], window,
+            mode = "valid")
 
-    for proportion, year in zip(proportion_RA, years_RA): 
-        new_df.append({
-            "RA" : True, 
-            "annee" : year,
-            "discipline" : discipline,
-            "proportion" : proportion
-        })
+        for proportion, year in zip(proportion_RA, years_RA): 
+            new_df.append({
+                "RA" : True, 
+                "annee" : year,
+                "discipline" : discipline,
+                "proportion" : proportion,
+                "definition" : definition
+            })
 
 # Save to csv - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 pd.DataFrame(new_df).to_csv(

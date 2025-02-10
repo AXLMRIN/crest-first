@@ -98,13 +98,19 @@ year_set = set(original_df["annee"]) # is sorted
 
 new_df = []
 
-def eval(df, year):
+def eval_restr(df, year):
     return 100 * ( df.loc[
         df["annee"] == year, "bert_genre"
     ].mean() - df.loc[
         df["annee"] == year, "bert_genre_stat"
     ].mean() ) 
 
+def eval_ext(df, year):
+    return 100 * df.loc[
+        df["annee"] == year, "bert_genre"
+    ].mean()
+
+# >>> Evalutation 'restrainte'
 for revue, revue_df in grouped_df : 
     for year in year_set:
         new_df.append({
@@ -112,13 +118,26 @@ for revue, revue_df in grouped_df :
             "annee" : year,
             "revue" : revue,
             "discipline" : what_discipline(revue),
-            "proportion" : eval(revue_df, year)
+            "proportion" : eval_restr(revue_df, year),
+            "definition" : "restr"
+        })
+
+# >>> Evalutation 'extensive'
+for revue, revue_df in grouped_df : 
+    for year in year_set:
+        new_df.append({
+            "RA" : False,
+            "annee" : year,
+            "revue" : revue,
+            "discipline" : what_discipline(revue),
+            "proportion" : eval_ext(revue_df, year),
+            "definition" : "ext"
         })
 
 
 # Proceed to the Rolling Average - - - - - - - - - - - - - - - - - - - - - - - -
 # >>> Define a new pandas.Dataframe to evaluate the rolling average
-new_df_grouped = pd.DataFrame(new_df).groupby("revue")
+new_df_grouped = pd.DataFrame(new_df).groupby("definition")
 
 window : np.ndarray = np.ones(RA_window_size) / RA_window_size
 
@@ -126,19 +145,21 @@ years : list = list(year_set)
 years_RA : list = years[RA_window_size // 2 :
                          len(years) - (RA_window_size - RA_window_size // 2)]
 
-for revue, revue_df in new_df_grouped :
-    proportion_RA : np.ndarray = np.convolve(
-        revue_df["proportion"], window,
-        mode = "valid")
+for definition, definition_df in new_df_grouped : 
+    for revue, revue_df in definition_df.groupby("revue"):
+        proportion_RA : np.ndarray = np.convolve(
+            revue_df["proportion"], window,
+            mode = "valid")
 
-    for proportion, year in zip(proportion_RA, years_RA): 
-        new_df.append({
-            "RA" : True, 
-            "annee" : year,
-            "revue" : revue,
-            "discipline" : what_discipline(revue),
-            "proportion" : proportion
-        })
+        for proportion, year in zip(proportion_RA, years_RA): 
+            new_df.append({
+                "RA" : True, 
+                "annee" : year,
+                "revue" : revue,
+                "discipline" : what_discipline(revue),
+                "proportion" : proportion,
+                "definition" : definition
+            })
 
 # Save to csv - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 pd.DataFrame(new_df).to_csv(
