@@ -18,7 +18,10 @@ sys.path.append(("/Users/axelmorin/Library/Mobile Documents/com~apple~CloudDocs"
 # Classes
 from plotlyThemes.general_theme import GeneralTheme
 from package.auteurice import(
-    make_a_bar
+    make_a_bar,
+    title_on_the_side,
+    yScale,
+    customHistogram
 )
 # Functions
 
@@ -29,11 +32,8 @@ filenames = {
     "save" : "auteurice.html"
 }
 
-middle_gap : float = 30
-height_gap : float = 0.05
-bin_size : float = 0.05
+custom_hist = customHistogram()
 
-# TODO Think of a better way to manage the settings
 theme = GeneralTheme(**{
     "xaxis" : {"title" : "", "grid_opacity" : 0.7},
     "yaxis" : {"title" : ""},
@@ -63,10 +63,6 @@ fig.update_layout(
 theme.xaxis.config["showline"] = False
 theme.xaxis.config["range"] = [-125, 125]
 theme.xaxis.config["zeroline"] = False
-theme.xaxis.config["tickvals"] = [ 
-    int(- middle_gap - 50), int(- middle_gap - 25),
-    int(  middle_gap + 50), int(  middle_gap + 25)
-    ]
 theme.xaxis.config["showticklabels"] = False
 
 theme.yaxis.config["showgrid"] = False
@@ -74,9 +70,9 @@ theme.yaxis.config["zeroline"] = False
 theme.yaxis.config["showticklabels"] = False
 theme.yaxis.config["tickvals"] = []
 
-theme.legend.config["itemclick"] = "toggle"
-theme.legend.config["itemdoubleclick"] = False
-theme.legend.config["groupclick"] = "togglegroup"
+# theme.legend.config["itemclick"] = "toggle"
+# theme.legend.config["itemdoubleclick"] = False
+# theme.legend.config["groupclick"] = "togglegroup"
 
 fig.update_layout(
     xaxis = theme.xaxis.config, 
@@ -84,142 +80,29 @@ fig.update_layout(
     legend = theme.legend.config
 )
 
-# Add the ticks - Alias does'nt seem to work well - - - - - - - - - - - - - - - 
-def label_transform(x) : 
-    """
-    even with xref, yref being "paper", the (0,0) point points to the 
-    bottom left corner of the plot area and (1,1) to the top right corner
-    """
-    dx1, dx2 = (abs(el) for el in theme.xaxis.config["range"])
-    return (x + dx1) / (dx1 + dx2)
+custom_hist.set_axis_labels(fig, theme.xaxis.config["range"])
+# Add anotation on the left and right for men and women - - - - - - - - - - - - 
+title_on_the_side(fig, "Femme (présumé)", x = 0, orientation =-90)
+title_on_the_side(fig, "Homme (présumé)", x = 1, orientation = 90)
 
-alias = {
-    int(- middle_gap - 50) : "50 %",
-    int(- middle_gap - 25) : "25 %",
-    int(  middle_gap + 25) : "25 %",
-    int(  middle_gap + 50) : "50 %"
-}
-
-for x in alias : 
-    fig.add_annotation(
-        text = alias[x],
-        x = label_transform(x), y = -0.05,
-        xref = "paper", yref = "paper",
-        showarrow = False, 
-        xanchor = "center", align = "center"
-    )
-
-fig.add_annotation(
-    text = "Femme (présumé)",
-    x = 0, y = 0.5,
-    textangle= -90,
-    xref = "paper", yref = "paper",
-    showarrow = False, 
-    xanchor = "center", align = "center"
-)
-
-fig.add_annotation(
-    text = "Homme (présumé)",
-    x = 1, y = 0.5,
-    textangle= 90,
-    xref = "paper", yref = "paper",
-    showarrow = False, 
-    xanchor = "center", align = "center"
-)
 # Create Rectangles ============================================================
 idx = np.argsort(df_plot["r_w"])
-disc_sorted = np.array(df_plot["discipline"])[idx]
+discipline_list = np.array(df_plot["discipline"])
+
+y_scale = yScale(factor = 1 / len(df_plot),
+                 offset = 0.05, 
+                 order  = {
+                     discipline : i
+                     for i,discipline in enumerate(discipline_list[idx])
+                 })
+
+for discipline, discipline_df in df_plot.groupby("discipline") : 
+    custom_hist.display_for_a_category(fig, y_scale, discipline, discipline_df)
+
+# Add a custom legend
+custom_hist.add_custom_legend(fig)
 
 
-n_disciplines = len(df_plot)
-y_tick_value = 1 / n_disciplines
-
-grouped = df_plot.groupby("discipline")
-
-for i, discipline in enumerate(disc_sorted):
-    discipline_df = grouped.get_group(discipline)
-    # Add women rates
-    fig.add_trace(
-        make_a_bar( - middle_gap, y_tick_value * i + 0.05,
-                -1 * discipline_df["r_w"].item(), bin_size,
-                name = discipline, fillcolor = "rgba(180,180,180,0.7)",
-                line = {"color" : "black", "width" : 1},
-                legendgroup = "a publié",
-                showlegend = False)
-    )
-    
-    # Add women rates specialised in gender
-    fig.add_trace(
-        make_a_bar( - middle_gap, y_tick_value * i + 0.05,
-                -1 * discipline_df["r_w_g"].item(), bin_size,
-                name = discipline, fillcolor = "rgba(100,100,100,0.7)",
-                line = {"color" : "black", "width" : 1},
-                legendgroup = "a publié en mentionnant le genre",
-                showlegend = False)
-    )
-    
-    # Add men rates
-    fig.add_trace(
-        make_a_bar( middle_gap, y_tick_value * i + 0.05,
-                discipline_df["r_m"].item(), bin_size,
-                name = discipline, fillcolor = "rgba(180,180,180,0.7)",
-                line = {"color" : "black", "width" : 1},
-                legendgroup = "a publié",
-                showlegend = False)
-    )
-    
-    # Add women rates specialised in gender
-    fig.add_trace(
-        make_a_bar( middle_gap, y_tick_value * i + 0.05,
-                discipline_df["r_m_g"].item(), bin_size,
-                name = discipline, fillcolor = "rgba(100,100,100,0.7)",
-                line = {"color" : "black", "width" : 1},
-                legendgroup = "a publié en mentionnant le genre",
-                showlegend = False)
-    )
-
-    # Add the discipline name 
-    fig.add_trace(
-        go.Scatter(
-            x = [0], y = [y_tick_value * i + 0.05],
-            mode="text",
-            text=[discipline],
-            textposition="middle center",
-            textfont=dict(
-                family="sans serif",
-                size=18
-        ),
-        showlegend = False, name = "",
-        hovertemplate = (f"<b>{discipline}</b><br>"
-                         f"Homme : {discipline_df["r_m"].item():.1f} % ont publié, "
-                         f"{discipline_df["r_m_g"].item():.1f} % ont parlé de genre <br>"
-                         f"Femme : {discipline_df["r_w"].item():.1f} % ont publié, "
-                         f"{discipline_df["r_w_g"].item():.1f} % ont parlé de genre<br>")
-    ))
-# TODELETE
-print(fig.data[0])
-# Custom legend
-fig.add_trace(
-    go.Scatter(x = [None], y = [None], 
-               fillcolor = "rgba(100,100,100,0.7)",
-               line = {"color" : "black", "width" : 1},
-               legendgroup = "a publié en mentionnant le genre",
-               fill = "toself", mode = "lines",
-               name = "a publié en mentionnant le genre",
-               showlegend = True)
-)
-
-fig.add_trace(
-    go.Scatter(x = [None], y = [None], 
-               fillcolor = "rgba(180,180,180,0.7)",
-               line = {"color" : "black", "width" : 1},
-               legendgroup = "a publié",
-               fill = "toself", mode = "lines",
-               name = "a publié sans mentionner le genre",
-               showlegend = True)
-)
-
-    
 # Save the figure - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 SAVEPATH = "views/"
 # NOTE change 'include_plotlyjs' for lighter files
