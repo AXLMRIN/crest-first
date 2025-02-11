@@ -180,11 +180,55 @@ class customHistogram:
         )
     
     def add_custom_legend(self, fig : go.Scatter) -> None : 
+
+        # With colors ==========================================================
+        # fig.add_trace(
+        #     go.Scatter(
+        #         x = [None], y = [None],
+        #         fill = "toself", fillcolor = self.color_1_1,
+        #         name = "ne mentionne pas le genre", legendgroup = "Femme",
+        #         mode = "lines", showlegend = True,
+        #         line = self.line_style
+        #     )
+        # )
+        
+        # fig.add_trace(
+        #     go.Scatter(
+        #         x = [None], y = [None],
+        #         fill = "toself", fillcolor = self.color_1_2,
+        #         name = "mentionne le genre", legendgroup = "Femme",
+        #         mode = "lines", showlegend = True,
+        #         line = self.line_style
+        #     )
+        # )
+        
+        # fig.add_trace(
+        #     go.Scatter(
+        #         x = [None], y = [None],
+        #         fill = "toself", fillcolor = self.color_2_1,
+        #         name = "ne mentionne pas le genre", legendgroup = "Homme",
+        #         mode = "lines", showlegend = True,
+        #         line = self.line_style
+        #     )
+        # )
+        
+        # fig.add_trace(
+        #     go.Scatter(
+        #         x = [None], y = [None],
+        #         fill = "toself", fillcolor = self.color_2_2,
+        #         name = "mentionne le genre", legendgroup = "Homme",
+        #         mode = "lines", showlegend = True,
+        #         line = self.line_style
+        #     )
+        # )
+
+        # Grey shades ==========================================================
+        
         fig.add_trace(
             go.Scatter(
                 x = [None], y = [None],
-                fill = "toself", fillcolor = self.color_1_1,
-                name = "ne mentionne pas le genre", legendgroup = "Femme",
+                fill = "toself", fillcolor = "rgb(169,169,169)",
+                name = "ne mentionne pas le genre",
                 mode = "lines", showlegend = True,
                 line = self.line_style
             )
@@ -193,29 +237,10 @@ class customHistogram:
         fig.add_trace(
             go.Scatter(
                 x = [None], y = [None],
-                fill = "toself", fillcolor = self.color_1_2,
-                name = "mentionne le genre", legendgroup = "Femme",
+                fill = "toself", fillcolor = "rgb(93,93,93)",
+                name = "mentionne le genre",
                 mode = "lines", showlegend = True,
                 line = self.line_style
             )
         )
         
-        fig.add_trace(
-            go.Scatter(
-                x = [None], y = [None],
-                fill = "toself", fillcolor = self.color_2_1,
-                name = "ne mentionne pas le genre", legendgroup = "Homme",
-                mode = "lines", showlegend = True,
-                line = self.line_style
-            )
-        )
-        
-        fig.add_trace(
-            go.Scatter(
-                x = [None], y = [None],
-                fill = "toself", fillcolor = self.color_2_2,
-                name = "mentionne le genre", legendgroup = "Homme",
-                mode = "lines", showlegend = True,
-                line = self.line_style
-            )
-        )

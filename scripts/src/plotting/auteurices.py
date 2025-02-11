@@ -70,9 +70,10 @@ theme.yaxis.config["zeroline"] = False
 theme.yaxis.config["showticklabels"] = False
 theme.yaxis.config["tickvals"] = []
 
-# theme.legend.config["itemclick"] = "toggle"
-# theme.legend.config["itemdoubleclick"] = False
-# theme.legend.config["groupclick"] = "togglegroup"
+theme.legend.config["itemclick"] = False
+theme.legend.config["itemdoubleclick"] = False
+# theme.legend.config["groupclick"] = False
+
 
 fig.update_layout(
     xaxis = theme.xaxis.config, 
