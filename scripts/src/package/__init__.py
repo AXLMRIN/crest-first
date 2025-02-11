@@ -7,7 +7,7 @@ figure_parameters : dict = {
             "margin" : {"l" : 20, "r" : 20}
         },
         "xaxis" : {
-            "title" : "",
+            "title" : {"texte" : ""},
             "grid_opacity" : 0.7,
             "showline" : False,
             "range" : [-125, 125],
@@ -15,7 +15,7 @@ figure_parameters : dict = {
             "showticklabels" : False
         },
         "yaxis" : {
-            "title" : "",
+            "title" : {"text" : ""},
             "showgrid" : False,
             "zeroline" : False,
             "showticklabels" : False,
@@ -26,5 +26,63 @@ figure_parameters : dict = {
             "itemclick" : False,
             "itemdoubleclick" : False
         }
+    },
+    "scatter_plot" : {
+        "general" : {
+            "width" : 800,
+            "height" : 1200,
+            "margin" : {"l" : 200, "r" : 200}
+        },
+        "xaxis" : {
+            "title" : {"text" : "Proportion des articles mentionnant la classe"},
+            "range" : [-5, 35],
+            "showline" : False
+        },
+        "yaxis" : {
+            "title" : {"text" : "Proportion des articles mentionnant le genre"},
+            "range" : [-5, 105]
+        },
+        "legend" : {
+            "itemsizing" : "constant",
+            "itemwidth" : 50,
+            "y" : 1.1,
+            "entrywidth" : 0.25
+        }
+    },
+    "heatmap" : {
+        "general" : {
+            'xaxis':  {'anchor': 'x' , 'domain': [0.0, 1.0  ]},
+            'yaxis':  {'anchor': 'y' , 'domain': [0.0, 0.25 ]},
+            'yaxis2': {'anchor': 'y2', 'domain':  [0.72, 1.0  ]},
+            "height" : 800,
+            "width" : 1200,
+            "margin" : {"l" : 200, "r" : 50}
+        },
+        "xaxis" : {
+            "grid_opacity" : 0.15,
+            "title" : {"text" : "Année de publication"},
+            "type" : "date"
+        },
+        "yaxis" : {
+            "grid_opacity" : 0.15,
+            "title" : {"text" : "Proportion des articles<br>mentionnant le genre"}
+        },
+        "yaxis2" : {
+            "title" : {"text" : "Revue"}
+        },
+        "legend" : {
+            "x" : 0.5, "y" : -0.15
+        }
+    },
+    "general trend" : {
+        "xaxis" : {
+            "title" : {"text" : ""},
+            "showgrid" : False
+        },
+        "yaxis" : {
+            "title" : {"text" : ""},
+            "showgrid" : False
+        }
     }
+
 }
