@@ -32,5 +32,7 @@ def make_a_bar(x : float, y : float, dx : float, dy : float,
         ],
         fill = "toself",
         mode = "lines",
+        text = f"{abs(dx):.1f} %",
+        hoverinfo="text",
         **scatter_kwargs
     )

@@ -36,7 +36,8 @@ bin_size : float = 0.05
 # TODO Think of a better way to manage the settings
 theme = GeneralTheme(**{
     "xaxis" : {"title" : "", "grid_opacity" : 0.7},
-    "yaxis" : {"title" : ""}
+    "yaxis" : {"title" : ""},
+    "legend" : {"position" : (0.5, 1.05)}
 })
 
 # Open Files ===================================================================
@@ -73,9 +74,14 @@ theme.yaxis.config["zeroline"] = False
 theme.yaxis.config["showticklabels"] = False
 theme.yaxis.config["tickvals"] = []
 
+theme.legend.config["itemclick"] = "toggle"
+theme.legend.config["itemdoubleclick"] = False
+theme.legend.config["groupclick"] = "togglegroup"
+
 fig.update_layout(
     xaxis = theme.xaxis.config, 
-    yaxis = theme.yaxis.config
+    yaxis = theme.yaxis.config,
+    legend = theme.legend.config
 )
 
 # Add the ticks - Alias does'nt seem to work well - - - - - - - - - - - - - - - 
@@ -136,40 +142,40 @@ for i, discipline in enumerate(disc_sorted):
     fig.add_trace(
         make_a_bar( - middle_gap, y_tick_value * i + 0.05,
                 -1 * discipline_df["r_w"].item(), bin_size,
-                name = "a publié", fillcolor = "rgba(180,180,180,0.7)",
+                name = discipline, fillcolor = "rgba(180,180,180,0.7)",
                 line = {"color" : "black", "width" : 1},
-                # legendgroup = "a publié",
-                showlegend = True)
+                legendgroup = "a publié",
+                showlegend = False)
     )
     
     # Add women rates specialised in gender
     fig.add_trace(
         make_a_bar( - middle_gap, y_tick_value * i + 0.05,
                 -1 * discipline_df["r_w_g"].item(), bin_size,
-                name = "a publié sur le genre", fillcolor = "rgba(100,100,100,0.7)",
+                name = discipline, fillcolor = "rgba(100,100,100,0.7)",
                 line = {"color" : "black", "width" : 1},
-                # legendgroup = "a publié sur le genre",
-                showlegend = True)
+                legendgroup = "a publié en mentionnant le genre",
+                showlegend = False)
     )
     
     # Add men rates
     fig.add_trace(
         make_a_bar( middle_gap, y_tick_value * i + 0.05,
                 discipline_df["r_m"].item(), bin_size,
-                name = "a publié", fillcolor = "rgba(180,180,180,0.7)",
+                name = discipline, fillcolor = "rgba(180,180,180,0.7)",
                 line = {"color" : "black", "width" : 1},
-                # legendgroup = "a publié",
-                showlegend = True)
+                legendgroup = "a publié",
+                showlegend = False)
     )
     
     # Add women rates specialised in gender
     fig.add_trace(
         make_a_bar( middle_gap, y_tick_value * i + 0.05,
                 discipline_df["r_m_g"].item(), bin_size,
-                name = "a publié sur le genre", fillcolor = "rgba(100,100,100,0.7)",
+                name = discipline, fillcolor = "rgba(100,100,100,0.7)",
                 line = {"color" : "black", "width" : 1},
-                # legendgroup = "a publié sur le genre",
-                showlegend = True)
+                legendgroup = "a publié en mentionnant le genre",
+                showlegend = False)
     )
 
     # Add the discipline name 
@@ -183,9 +189,35 @@ for i, discipline in enumerate(disc_sorted):
                 family="sans serif",
                 size=18
         ),
-        showlegend = False
+        showlegend = False, name = "",
+        hovertemplate = (f"<b>{discipline}</b><br>"
+                         f"Homme : {discipline_df["r_m"].item():.1f} % ont publié, "
+                         f"{discipline_df["r_m_g"].item():.1f} % ont parlé de genre <br>"
+                         f"Femme : {discipline_df["r_w"].item():.1f} % ont publié, "
+                         f"{discipline_df["r_w_g"].item():.1f} % ont parlé de genre<br>")
     ))
+# TODELETE
+print(fig.data[0])
+# Custom legend
+fig.add_trace(
+    go.Scatter(x = [None], y = [None], 
+               fillcolor = "rgba(100,100,100,0.7)",
+               line = {"color" : "black", "width" : 1},
+               legendgroup = "a publié en mentionnant le genre",
+               fill = "toself", mode = "lines",
+               name = "a publié en mentionnant le genre",
+               showlegend = True)
+)
 
+fig.add_trace(
+    go.Scatter(x = [None], y = [None], 
+               fillcolor = "rgba(180,180,180,0.7)",
+               line = {"color" : "black", "width" : 1},
+               legendgroup = "a publié",
+               fill = "toself", mode = "lines",
+               name = "a publié sans mentionner le genre",
+               showlegend = True)
+)
 
     
 # Save the figure - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
