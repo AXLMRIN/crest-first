@@ -1,4 +1,5 @@
 import re
+import deepcopy
 
 def hex_to_rgb(hex : str):
     ''' Source : https://www.30secondsofcode.org/python/s/hex-to-rgb/
@@ -20,6 +21,16 @@ def apply_opacity(color, opacity) :
         color_rgb = hex_to_rgb(color)
     else : color_rgb = color
     return "rgba" + color_rgb[3:-1] +"," +  str(opacity) + ")"
+
+def merge_dictionnaries(internal : dict, external : dict) -> dict: 
+    internal = deepcopy.copy(internal)
+    # TODO find a new way to deeply merge 2 dictionnaries
+    for key in external : 
+        if isinstance(external[key], dict) : 
+            for key_2 in external[key] : 
+                internal[key][key_2] = external[key][key_2]
+        else : 
+                internal[key] = external[key]
 
 class XAxis :
     def __init__(self, secondary_colour : str, fontsize : int = 15, 
@@ -54,8 +65,10 @@ class XAxis :
                     "color" : secondary_colour
                 }
             }
-            
         }
+    def set_config(self, external_config : dict): 
+        self.config = merge_dictionnaries(self.config, external_config)
+       
 
 class YAxis :
     def __init__(self, secondary_colour : str, fontsize : int = 15, 
@@ -90,6 +103,8 @@ class YAxis :
                 }
             }
         }
+    def set_config(self, external_config : dict): 
+        self.config = merge_dictionnaries(self.config, external_config)
 
 class Hover : 
     def __init__(self, secondary_colour : str, tertiary_colour : str, 
@@ -107,6 +122,8 @@ class Hover :
             },
             "hovermode" : "x unified"
         }
+    def set_config(self, external_config : dict): 
+        self.config = merge_dictionnaries(self.config, external_config)
 
 class TracesColours : 
     def __init__(self) : 
@@ -151,6 +168,9 @@ class TracesColours :
     
     def get_with_opacity(self, key, opacity) : 
         return apply_opacity(self.config[key], opacity)
+    
+    def set_config(self, external_config : dict): 
+        self.config = merge_dictionnaries(self.config, external_config)
 
 class Legend : 
     def __init__(self, secondary_colour : str, tertiary_colour : str,
@@ -176,6 +196,9 @@ class Legend :
             "y" : position[1], "yanchor" : anchor[1], 
             "entrywidth" : 0.45, "entrywidthmode" : "fraction",
         }
+
+    def set_config(self, external_config : dict): 
+        self.config = merge_dictionnaries(self.config, external_config)
 
 class GeneralTheme : 
     def __init__(self,
@@ -205,4 +228,7 @@ class GeneralTheme :
         self.legend = Legend(secondary_colour = secondary_colour,
                             tertiary_colour  = tertiary_colour,
                             **kwargs["legend"])
+        
+    def change_config(self, external_config_hub): 
+        pass 
             
