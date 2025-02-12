@@ -1,5 +1,5 @@
 import re
-import deepcopy
+from copy import deepcopy
 
 def hex_to_rgb(hex : str):
     ''' Source : https://www.30secondsofcode.org/python/s/hex-to-rgb/
@@ -23,7 +23,7 @@ def apply_opacity(color, opacity) :
     return "rgba" + color_rgb[3:-1] +"," +  str(opacity) + ")"
 
 def merge_dictionnaries(internal : dict, external : dict) -> dict: 
-    internal = deepcopy.copy(internal)
+    internal = deepcopy(internal)
     # TODO find a new way to deeply merge 2 dictionnaries
     for key in external : 
         if isinstance(external[key], dict) : 
@@ -31,6 +31,7 @@ def merge_dictionnaries(internal : dict, external : dict) -> dict:
                 internal[key][key_2] = external[key][key_2]
         else : 
                 internal[key] = external[key]
+    return internal
 
 class XAxis :
     def __init__(self, secondary_colour : str, fontsize : int = 15, 
@@ -230,5 +231,15 @@ class GeneralTheme :
                             **kwargs["legend"])
         
     def change_config(self, external_config_hub): 
-        pass 
+        if "xaxis" in external_config_hub : 
+            self.xaxis.set_config(external_config_hub["xaxis"])
+        if "yaxis" in external_config_hub : 
+            self.yaxis.set_config(external_config_hub["yaxis"])
+        if "hover" in external_config_hub : 
+            self.hover.set_config(external_config_hub["hover"])
+        if "traces_color" in external_config_hub : 
+            self.traces_color.set_config(external_config_hub["traces_color"])
+        if "legend" in external_config_hub : 
+            self.legend.set_config(external_config_hub["legend"])
+        
             
