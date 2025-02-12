@@ -29,17 +29,19 @@
     },
     "scatter_plot" : {
         "general" : {
-            "width" : 800,
-            "height" : 1200,
+            "width" : 1200,
+            "height" : 800,
             "margin" : {"l" : 200, "r" : 200}
         },
         "xaxis" : {
             "title" : {"text" : "Proportion des articles mentionnant la classe"},
             "range" : [-5, 35],
+            "gridcolor" : "rgba(34,34,34,0.4)",
             "showline" : false
         },
         "yaxis" : {
             "title" : {"text" : "Proportion des articles mentionnant le genre"},
+            "gridcolor" : "rgbas(34,34,34,0.4)",
             "range" : [-5, 105]
         },
         "legend" : {
