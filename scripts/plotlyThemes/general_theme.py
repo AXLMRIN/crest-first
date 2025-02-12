@@ -43,6 +43,7 @@ class XAxis :
     def __init__(self, secondary_colour : str, fontsize : int = 15, 
                  fontfamily : str = "New York", title : str = "X Label",
                  grid_opacity : float = 1.0):
+        # FIXME grid_opacity is not linked to anything
 
         self.config : dict = {
             "showline": True,
@@ -60,8 +61,8 @@ class XAxis :
             },
 
             "showgrid": True,
-            "gridcolor" : apply_opacity(secondary_colour, grid_opacity),
-            "zerolinecolor" : apply_opacity(secondary_colour, grid_opacity),
+            "gridcolor" : secondary_colour,
+            "zerolinecolor" : secondary_colour,
             "gridwidth" : 1,
 
             "title" : {
@@ -81,6 +82,8 @@ class YAxis :
     def __init__(self, secondary_colour : str, fontsize : int = 15, 
                  fontfamily : str = "New York", title : str = "Y Label",
                  grid_opacity : float = 1.0):
+        # FIXME grid_opacity is not linked to anything
+
         self.config : dict = {
             "showline": False,
             "linewidth": 2,
@@ -97,8 +100,8 @@ class YAxis :
                 },
             
             "showgrid": True,
-            "gridcolor" : apply_opacity(secondary_colour, grid_opacity),
-            "zerolinecolor" : apply_opacity(secondary_colour, grid_opacity),
+            "gridcolor" : secondary_colour,
+            "zerolinecolor" : secondary_colour,
             "gridwidth" : 1,
 
             "title" : {
@@ -238,19 +241,18 @@ class GeneralTheme :
         
     def change_config(self, external_config_hub): 
         if "xaxis" in external_config_hub : 
-            print("Update xaxis")
             self.xaxis.set_config(external_config_hub["xaxis"])
+        
         if "yaxis" in external_config_hub : 
-            print("Update yaxis")
             self.yaxis.set_config(external_config_hub["yaxis"])
+        
         if "hover" in external_config_hub : 
-            print("Update hover")
             self.hover.set_config(external_config_hub["hover"])
+        
         if "traces_color" in external_config_hub : 
-            print("Update traces_color")
             self.traces_color.set_config(external_config_hub["traces_color"])
+        
         if "legend" in external_config_hub : 
-            print("Update legend")
             self.legend.set_config(external_config_hub["legend"])
         
             
