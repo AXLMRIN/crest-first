@@ -110,4 +110,3 @@ SAVEPATH = "views/"
 fig.write_html(SAVEPATH + filenames["save"],
                auto_play = False,
                include_plotlyjs = True, include_mathjax = False)
-
