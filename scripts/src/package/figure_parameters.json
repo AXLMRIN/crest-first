@@ -1,13 +1,14 @@
 {
-    "auteurices" : {
+    "auteurice" : {
         "general" : {
-            "width"  : 800,
-            "height" : 1200,
+            "width"  : 1200,
+            "height" : 800,
             "margin" : {"l" : 20, "r" : 20}
         },
         "xaxis" : {
             "title" : {"text" : ""},
-            "grid_opacity" : 0.7,
+            "gridcolor" : "rgb(34,34,34,0.7)",
+            "zerolinecolor" : "rgb(34,34,34,0.7)",
             "showline" : false,
             "range" : [-125, 125],
             "zeroline" : false,
@@ -21,7 +22,7 @@
             "tickvals" : []
         },
         "legend" : {
-            "position" : [0.5, 1.05],
+            "x" : 0.5, "y" : 1.05,
             "itemclick" : false,
             "itemdoubleclick" : false
         }

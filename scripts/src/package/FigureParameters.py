@@ -6,3 +6,5 @@ class FigureParameters :
             self.data = json.load(file)
     
     def __getitem__(self, key) : return self.data[key]
+
+    def __contains__(self, key) : return key in self.data
