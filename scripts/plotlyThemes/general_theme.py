@@ -1,5 +1,6 @@
 import re
 from copy import deepcopy
+from mergedeep import merge
 
 def hex_to_rgb(hex : str):
     ''' Source : https://www.30secondsofcode.org/python/s/hex-to-rgb/
@@ -23,18 +24,20 @@ def apply_opacity(color, opacity) :
     return "rgba" + color_rgb[3:-1] +"," +  str(opacity) + ")"
 
 def merge_dictionnaries(internal : dict, external : dict) -> dict: 
-    internal = deepcopy(internal) # NOTE might be removed
-    # https://www.geeksforgeeks.org/recursively-merge-dictionaries-in-python/
-    for key, value in external.items():
-        if key in internal and\
-           isinstance(internal[key], dict) and\
-           isinstance(value, dict):
-            # Recursively merge nested dictionaries
-            merge_dictionnaries(internal[key], value)
-        else:
-            # Merge non-dictionary values
-            internal[key] = value 
-    return internal
+    # internal = deepcopy(internal) # NOTE might be removed
+    # # https://www.geeksforgeeks.org/recursively-merge-dictionaries-in-python/
+    # for key, value in external.items():
+    #     if key in internal and\
+    #        isinstance(internal[key], dict) and\
+    #        isinstance(value, dict):
+    #         # Recursively merge nested dictionaries
+    #         merge_dictionnaries(internal[key], value)
+    #     else:
+    #         # Merge non-dictionary values
+    #         internal[key] = value 
+    # return internal
+    internal = deepcopy(internal)
+    return merge(internal, external)
 
 class XAxis :
     def __init__(self, secondary_colour : str, fontsize : int = 15, 
@@ -235,14 +238,19 @@ class GeneralTheme :
         
     def change_config(self, external_config_hub): 
         if "xaxis" in external_config_hub : 
+            print("Update xaxis")
             self.xaxis.set_config(external_config_hub["xaxis"])
         if "yaxis" in external_config_hub : 
+            print("Update yaxis")
             self.yaxis.set_config(external_config_hub["yaxis"])
         if "hover" in external_config_hub : 
+            print("Update hover")
             self.hover.set_config(external_config_hub["hover"])
         if "traces_color" in external_config_hub : 
+            print("Update traces_color")
             self.traces_color.set_config(external_config_hub["traces_color"])
         if "legend" in external_config_hub : 
+            print("Update legend")
             self.legend.set_config(external_config_hub["legend"])
         
             

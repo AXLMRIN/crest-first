@@ -14,7 +14,7 @@
             "showticklabels" : false
         },
         "yaxis" : {
-            "title" : {"text" : "baba"},
+            "title" : {"text" : ""},
             "showgrid" : false,
             "zeroline" : false,
             "showticklabels" : false,
