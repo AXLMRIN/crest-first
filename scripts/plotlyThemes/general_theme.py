@@ -23,14 +23,17 @@ def apply_opacity(color, opacity) :
     return "rgba" + color_rgb[3:-1] +"," +  str(opacity) + ")"
 
 def merge_dictionnaries(internal : dict, external : dict) -> dict: 
-    internal = deepcopy(internal)
-    # TODO find a new way to deeply merge 2 dictionnaries
-    for key in external : 
-        if isinstance(external[key], dict) : 
-            for key_2 in external[key] : 
-                internal[key][key_2] = external[key][key_2]
-        else : 
-                internal[key] = external[key]
+    internal = deepcopy(internal) # NOTE might be removed
+    # https://www.geeksforgeeks.org/recursively-merge-dictionaries-in-python/
+    for key, value in external.items():
+        if key in internal and\
+           isinstance(internal[key], dict) and\
+           isinstance(value, dict):
+            # Recursively merge nested dictionaries
+            merge_dictionnaries(internal[key], value)
+        else:
+            # Merge non-dictionary values
+            internal[key] = value 
     return internal
 
 class XAxis :
