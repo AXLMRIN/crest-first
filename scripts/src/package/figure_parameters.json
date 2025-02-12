@@ -61,12 +61,12 @@
             "margin" : {"l" : 200, "r" : 50}
         },
         "xaxis" : {
-            "grid_opacity" : 0.15,
+            "gridcolor" : "rgba(34,34,34,0.15)",
             "title" : {"text" : "Année de publication"},
             "type" : "date"
         },
         "yaxis" : {
-            "grid_opacity" : 0.15,
+            "gridcolor" : "rgba(34,34,34,0.15)",
             "title" : {"text" : "Proportion des articles<br>mentionnant le genre"}
         },
         "yaxis2" : {
